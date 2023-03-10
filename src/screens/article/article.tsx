@@ -1,16 +1,27 @@
 import React, { useEffect, useReducer } from 'react';
 import { ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
+import type { StackScreenProps } from '@react-navigation/stack';
 
 import api from 'lib/api';
-import { basicReducer } from 'lib/basic-reducer';
+import { basicReducer, BasicReducer } from 'lib/basic-reducer';
 import { ArticlesHeaderTitle } from 'components/articles-header-title';
 import { Article } from 'components/article';
 import { screenStyles } from 'styles';
 import { Loading } from 'components/loading';
 import { handleError } from 'state/actions';
+import { ArticlesStackParamList } from 'navigators/articles-stack';
+import { ArticleDto } from 'types';
 
-export const ArticleScreen = (props) => {
+type ArticleScreenProps = StackScreenProps<ArticlesStackParamList, 'Article'>;
+
+type ArticleScreenState = {
+  regionTitle: string;
+  article: ArticleDto | null;
+  isLoading: boolean;
+};
+
+export const ArticleScreen = (props: ArticleScreenProps) => {
   const { navigation, route } = props;
 
   const {
@@ -18,11 +29,14 @@ export const ArticleScreen = (props) => {
   } = route;
 
   const dispatch = useDispatch();
-  const [state, setState] = useReducer(basicReducer, {
-    regionTitle: regionTitleFromParams,
-    article: null,
-    isLoading: false,
-  });
+  const [state, setState] = useReducer<BasicReducer<ArticleScreenState>>(
+    basicReducer,
+    {
+      regionTitle: regionTitleFromParams,
+      article: null,
+      isLoading: false,
+    },
+  );
 
   const { regionTitle, article, isLoading } = state;
 
@@ -34,13 +48,13 @@ export const ArticleScreen = (props) => {
     try {
       const { data } = await api.getArticle(articleId);
 
-      const { article } = data;
+      const { article: fetchedArticle } = data;
       const {
         region: { title: regionTitleFromApi },
-      } = article;
+      } = fetchedArticle;
 
       const newState = {
-        article,
+        article: fetchedArticle,
         isLoading: false,
         regionTitle: regionTitleFromApi,
       };

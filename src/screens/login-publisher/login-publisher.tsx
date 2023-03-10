@@ -9,27 +9,43 @@ import {
   Text as NativeBaseText,
   Icon,
 } from 'native-base';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { Loading } from 'components/loading';
 import { screenStyles, formStyles } from 'styles';
-import { basicReducer } from 'lib/basic-reducer';
+import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import api from 'lib/api';
 import { loginPublisher, handleError } from 'state/actions';
 import { showToast } from 'lib/helpers';
 import { ToastType } from 'types';
 import { FormSection, FormWrapper, ItemWrapper } from 'components/form';
+import { LoginStackParamList } from 'navigators/login-stack';
 
-export const LoginPublisherScreen = (props) => {
+type LoginPublisherScreenProps = StackScreenProps<
+  LoginStackParamList,
+  'LoginPublisher'
+>;
+
+type FormValues = {
+  email: string;
+  password: string;
+  code: string;
+};
+
+export const LoginPublisherScreen = (props: LoginPublisherScreenProps) => {
   const { navigation } = props;
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [formValues, setFormValues] = useReducer(basicReducer, {
-    email: '',
-    password: '',
-    code: '',
-  });
+  const [formValues, setFormValues] = useReducer<BasicReducer<FormValues>>(
+    basicReducer,
+    {
+      email: '',
+      password: '',
+      code: '',
+    },
+  );
 
   const handleTextChange = (fieldName: string) => (value: string) => {
     setFormValues({
@@ -47,7 +63,7 @@ export const LoginPublisherScreen = (props) => {
 
       dispatch(loginPublisher(token, articlesReported, publisherId));
       setIsLoading(false);
-      navigation.navigate('ArticlesStack');
+      navigation.navigate('ArticlesStack' as never);
       showToast(ToastType.SUCCESS, 'Udane logowanie.');
     } catch (error) {
       setIsLoading(false);

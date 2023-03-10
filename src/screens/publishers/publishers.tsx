@@ -2,19 +2,28 @@ import React, { useEffect, useReducer } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { basicReducer } from 'lib/basic-reducer';
+import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import { screenStyles } from 'styles';
 import api from 'lib/api';
 import { Loading } from 'components/loading';
 import { Publishers } from 'components/publishers';
 import { handleError } from 'state/actions';
+import { PublisherInListDto } from 'types';
+
+type PublishersScreenState = {
+  isLoading: boolean;
+  publishers: PublisherInListDto[];
+};
 
 export const PublishersScreen = () => {
   const dispatch = useDispatch();
-  const [state, setState] = useReducer(basicReducer, {
-    publishers: [],
-    isLoading: false,
-  });
+  const [state, setState] = useReducer<BasicReducer<PublishersScreenState>>(
+    basicReducer,
+    {
+      publishers: [],
+      isLoading: false,
+    },
+  );
 
   const { publishers, isLoading } = state;
 
@@ -23,9 +32,9 @@ export const PublishersScreen = () => {
     try {
       const { data } = await api.getPublishers();
 
-      const { publishers } = data;
+      const { publishers: fetchedPublishers } = data;
 
-      setState({ isLoading: false, publishers });
+      setState({ isLoading: false, publishers: fetchedPublishers });
     } catch (error) {
       setState({ isLoading: false });
       dispatch(handleError(error));

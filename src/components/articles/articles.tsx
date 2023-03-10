@@ -14,16 +14,32 @@ import {
   RefreshControl,
   Text,
 } from 'react-native';
+import { AxiosResponse } from 'axios';
 
-import { basicReducer } from 'lib/basic-reducer';
+import { basicReducer, BasicReducer } from 'lib/basic-reducer';
 import config from 'lib/config';
 import { handleError } from 'state/actions';
 import { FONT_FAMILY_HEADER_REGULAR } from 'styles';
+import { ArticleDto } from 'types';
 
 import { ArticleInList } from './article-in-list';
 import { getItem, getItemCount, getKey } from './helpers';
 
-export const Articles = (props) => {
+type ArticlesProps = {
+  apiCall: (
+    newPage: number,
+  ) => Promise<AxiosResponse<{ articles: ArticleDto[] }>>;
+  restart?: string;
+};
+
+type ArticlesState = {
+  isLoading: boolean;
+  articles: ArticleDto[];
+  page: number;
+  hasAllFetched: boolean;
+};
+
+export const Articles = (props: ArticlesProps) => {
   const { apiCall, restart = null } = props;
 
   const listRef = useRef(null);
@@ -35,25 +51,28 @@ export const Articles = (props) => {
     [],
   );
 
-  const [state, setState] = useReducer(basicReducer, {
-    isLoading: false,
-    articles: [],
-    page: 1,
-    hasAllFetched: false,
-  });
+  const [state, setState] = useReducer<BasicReducer<ArticlesState>>(
+    basicReducer,
+    {
+      isLoading: false,
+      articles: [],
+      page: 1,
+      hasAllFetched: false,
+    },
+  );
 
   const { isLoading, articles, page, hasAllFetched } = state;
 
   // Handlers
 
-  const fetchArticles = async (newPage) => {
+  const fetchArticles = async (newPage: number) => {
     setState({ isLoading: true });
     try {
       const { data } = await apiCall(newPage);
 
       const { articles: newArticles } = data;
 
-      const finalArticles =
+      const finalArticles: ArticleDto[] =
         newPage === 1 ? newArticles : [...articles, ...newArticles];
 
       setState({
@@ -87,6 +106,8 @@ export const Articles = (props) => {
 
     fetchArticles(1);
   }, [restart]);
+
+  console.log('Articles length >>>>>>>>>', articles.length);
 
   return (
     <>

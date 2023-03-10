@@ -17,7 +17,7 @@ import { Separator } from 'components/content';
 export const RegisterScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFacebookRegister = async () => {
     try {

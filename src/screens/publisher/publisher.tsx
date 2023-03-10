@@ -1,15 +1,28 @@
 import React, { useEffect, useReducer } from 'react';
 import { ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StackScreenProps } from '@react-navigation/stack';
 
-import { basicReducer } from 'lib/basic-reducer';
+import { basicReducer, BasicReducer } from 'lib/basic-reducer';
 import { screenStyles } from 'styles';
 import api from 'lib/api';
 import { Loading } from 'components/loading';
 import { Publisher } from 'components/publisher';
 import { handleError } from 'state/actions';
+import { PublisherDto } from 'types';
+import { ArticlesStackParamList } from 'navigators/articles-stack';
 
-export const PublisherScreen = (props) => {
+type PublisherScreenProps = StackScreenProps<
+  ArticlesStackParamList,
+  'Publisher'
+>;
+
+type PublisherScreenState = {
+  publisher: PublisherDto | null;
+  isLoading: boolean;
+};
+
+export const PublisherScreen = (props: PublisherScreenProps) => {
   const { route } = props;
 
   const {
@@ -17,10 +30,13 @@ export const PublisherScreen = (props) => {
   } = route;
 
   const dispatch = useDispatch();
-  const [state, setState] = useReducer(basicReducer, {
-    publisher: null,
-    isLoading: false,
-  });
+  const [state, setState] = useReducer<BasicReducer<PublisherScreenState>>(
+    basicReducer,
+    {
+      publisher: null,
+      isLoading: false,
+    },
+  );
 
   const { publisher, isLoading } = state;
 
@@ -29,9 +45,9 @@ export const PublisherScreen = (props) => {
     try {
       const { data } = await api.getPublisherInformation(publisherId);
 
-      const { publisher } = data;
+      const { publisher: fetchedPublisher } = data;
 
-      setState({ isLoading: false, publisher });
+      setState({ isLoading: false, publisher: fetchedPublisher });
     } catch (error) {
       setState({ isLoading: false });
       dispatch(handleError(error));
@@ -47,7 +63,7 @@ export const PublisherScreen = (props) => {
   return (
     <ScrollView style={screenStyles.screenWrapper}>
       <Loading isLoading={isLoading} />
-      <Publisher publisher={publisher} />
+      {publisher && <Publisher publisher={publisher} />}
     </ScrollView>
   );
 };

@@ -133,7 +133,9 @@ const retrieveComponentsFromChildren = (children) => {
           case 'ul': {
             const lis = el.children;
 
-            const lisTexts = lis.map((li) => cleanFromTags(li));
+            const lisTexts = lis
+              .map((li) => cleanFromTags(li))
+              .filter((text) => !!text);
 
             if (!lisTexts.length) break;
 
@@ -144,7 +146,9 @@ const retrieveComponentsFromChildren = (children) => {
           case 'ol': {
             const lis = el.children;
 
-            const lisTexts = lis.map((li) => cleanFromTags(li));
+            const lisTexts = lis
+              .map((li) => cleanFromTags(li))
+              .filter((text) => !!text);
 
             if (!lisTexts.length) break;
 

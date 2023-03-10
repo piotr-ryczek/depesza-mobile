@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import { Root } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
+import SplashScreen from 'react-native-splash-screen';
 
 import { BottomSheetProvider } from 'lib/contexts/bottom-sheet';
 import { AppDrawer } from 'navigators/app-drawer';
@@ -15,19 +16,18 @@ import linking from 'lib/linking';
 
 // const SettingsStack = createStackNavigator();
 
-// dl6OQB3lQFmRw5030QyQc3:APA91bEmXqKRbIa7SO_fhCNIp37GHpmB5Y_L__qkzoJxRU0JCKelGrFxuezAjb-FLRVqOZOdnMJ1RnlHF7uGAuVbyTcyMhKnFNEJyqMNBMVZ9RWfAzd9vEAfnPfQxign6sLm1FHoaquX
-
 function App() {
   // const fetchToken = async () => {
   //   const token = await messaging().getToken();
 
-  //   // console.log(token);
+  //   console.log(token);
   // };
 
-  // useEffect(() => {
-  //   fetchToken();
-  //   listenMessages();
-  // }, []);
+  useEffect(() => {
+    // fetchToken();
+    // listenMessages();
+    SplashScreen.hide();
+  }, []);
 
   // const listenMessages = async () => {
   //   messaging().onMessage((message) => {

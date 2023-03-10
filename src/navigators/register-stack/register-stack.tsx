@@ -1,22 +1,33 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackScreenProps,
+} from '@react-navigation/stack';
 
 import { RegisterScreen } from 'screens/register';
 import { RegisterByEmailScreen } from 'screens/register-by-email';
 
 import { baseScreenOptions } from 'lib/header/config';
+import { DrawerParamList } from 'navigators/app-drawer';
 
-const Stack = createStackNavigator();
+export type RegisterStackParamList = {
+  Register: {};
+  RegisterByEmail: {};
+};
+
+const Stack = createStackNavigator<RegisterStackParamList>();
 const { Navigator, Screen } = Stack;
 
-export const RegisterStack = (props) => {
+type RegisterStackProps = StackScreenProps<DrawerParamList, 'RegisterStack'>;
+
+export const RegisterStack = (props: RegisterStackProps) => {
   const { navigation } = props;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Navigator
-        initialRouteName="RegisterStack"
+        initialRouteName="Register"
         screenOptions={{
           ...baseScreenOptions({ navigation }),
         }}>

@@ -1,6 +1,6 @@
 import { Toast } from 'native-base';
 
-import { ToastType } from 'types';
+import { ToastType, FieldValidationErrors, ValidationErrorDto } from 'types';
 import translations from './translations';
 
 export const log = (...params) => {
@@ -53,11 +53,13 @@ export const showToast = (type: ToastType, message: string) => {
 
 export const clearUrl = (url: string) => url.replace(/^https?:\/\//, '');
 
-export const translateValidationErrorMessage = (message) =>
+export const translateValidationErrorMessage = (message: string): string =>
   translations[message];
 
-export const prepareValidationErrors = (validationErrors) =>
-  validationErrors.reduce((acc, error) => {
+export const prepareValidationErrors = (
+  validationErrors: ValidationErrorDto[],
+): FieldValidationErrors =>
+  validationErrors.reduce<FieldValidationErrors>((acc, error) => {
     const { field, message } = error;
 
     if (!acc[field]) {

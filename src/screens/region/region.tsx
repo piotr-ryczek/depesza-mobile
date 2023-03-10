@@ -1,23 +1,34 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StackScreenProps } from '@react-navigation/stack';
 
-import { basicReducer } from 'lib/basic-reducer';
+import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import { ArticlesHeaderTitle } from 'components/articles-header-title';
 import api from 'lib/api';
 import { Articles } from 'components/articles';
 import { handleError } from 'state/actions';
+import { ArticlesStackParamList } from 'navigators/articles-stack';
 
-export const RegionScreen = (props) => {
+type RegionScreenProps = StackScreenProps<ArticlesStackParamList, 'Region'>;
+
+type RegionState = {
+  regionTitle: string;
+};
+
+export const RegionScreen = (props: RegionScreenProps) => {
   const { navigation, route } = props;
   const {
     params: { regionId, regionTitle: regionTitleFromParams = '' },
   } = route;
 
   const dispatch = useDispatch();
-  const [state, setState] = useReducer(basicReducer, {
-    regionTitle: regionTitleFromParams,
-  });
+  const [state, setState] = useReducer<BasicReducer<RegionState>>(
+    basicReducer,
+    {
+      regionTitle: regionTitleFromParams,
+    },
+  );
 
   const { regionTitle } = state;
 

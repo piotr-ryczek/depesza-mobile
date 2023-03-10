@@ -1,11 +1,16 @@
 import React, { useCallback } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import { PublisherInListDto } from 'types';
 
 import { PublisherInList } from './publisher-in-list';
 
-const keyExtractor = ({ _id }) => _id;
+const keyExtractor = ({ _id }: PublisherInListDto): string => _id;
 
-export const Publishers = (props) => {
+type PublishersProps = {
+  publishers: PublisherInListDto[];
+};
+
+export const Publishers = (props: PublishersProps) => {
   const { publishers } = props;
 
   const renderItem = useCallback(

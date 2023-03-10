@@ -1,8 +1,22 @@
-import axios from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 import config from 'lib/config';
 
 import { store } from 'state/store';
+import { ArticleDto, PublisherDto, PublisherInListDto, RegionDto } from 'types';
+
+type StatusResponse = {
+  status: 'ok';
+};
+
+type AuthResponse = {
+  token: string;
+  toReadArticles: string[];
+  followedRegions: string[];
+  hasAccess: boolean;
+};
+
+type DataType = 'query' | 'body';
 
 class Api {
   private apiUrl;
@@ -11,13 +25,16 @@ class Api {
     this.apiUrl = config.apiUrl;
   }
 
-  getConfig = (data: any = null, dataType = 'query') => {
+  getConfig = (
+    data: any = null,
+    dataType: DataType = 'query',
+  ): AxiosRequestConfig => {
     const jwtToken = store.getState().jwtToken;
 
-    const config = {};
+    const requestConfig: AxiosRequestConfig = {};
 
     if (jwtToken) {
-      Object.assign(config, {
+      Object.assign(requestConfig, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -25,117 +42,176 @@ class Api {
     }
     if (data) {
       if (dataType === 'query') {
-        Object.assign(config, {
-          paramsSerializer: (params) => qs.stringify(params),
+        Object.assign(requestConfig, {
+          paramsSerializer: (params: any) => qs.stringify(params),
           params: data,
         });
       } else {
-        Object.assign(config, {
+        Object.assign(requestConfig, {
           data,
         });
       }
     }
-    return config;
+
+    return requestConfig;
   };
 
-  post = (url, body = {}) =>
+  post = <T>(url: string, body = {}): Promise<AxiosResponse<T>> =>
     axios.post(`${this.apiUrl}${url}`, body, this.getConfig());
 
-  put = (url, body = {}) =>
+  put = <T>(url: string, body = {}): Promise<AxiosResponse<T>> =>
     axios.put(`${this.apiUrl}${url}`, body, this.getConfig());
 
-  patch = (url, body = {}) =>
+  patch = <T>(url: string, body = {}): Promise<AxiosResponse<T>> =>
     axios.patch(`${this.apiUrl}${url}`, body, this.getConfig());
 
-  delete = (url, body = {}) =>
+  delete = <T>(url: string, body = {}): Promise<AxiosResponse<T>> =>
     axios.delete(`${this.apiUrl}${url}`, this.getConfig(body, 'body'));
 
-  get = (url, query = {}) =>
-    axios.get(`${this.apiUrl}${url}`, this.getConfig(query, 'query'));
+  get = <T>(url: string, query = {}): Promise<AxiosResponse<T>> => {
+    console.log(`${this.apiUrl}${url}`);
+    return axios.get(`${this.apiUrl}${url}`, this.getConfig(query, 'query'));
+  };
 
   // Login & Register
 
-  readerRefreshToken = () => this.post('/readers/refresh');
+  readerRefreshToken = (): Promise<AxiosResponse<AuthResponse>> =>
+    this.post('/readers/refresh');
 
-  loginByEmail = (email: string, password: string) =>
+  loginByEmail = (
+    email: string,
+    password: string,
+  ): Promise<AxiosResponse<AuthResponse>> =>
     this.post('/readers/loginByEmail', { email, password });
 
-  registerByEmail = (email: string, password: string, repeatPassword: string) =>
+  registerByEmail = (
+    email: string,
+    password: string,
+    repeatPassword: string,
+  ): Promise<AxiosResponse<StatusResponse>> =>
     this.post('/readers/registerByEmail', { email, password, repeatPassword });
 
-  verifyEmail = (emailVerificationCode: string) =>
+  verifyEmail = (
+    emailVerificationCode: string,
+  ): Promise<AxiosResponse<AuthResponse>> =>
     this.post('/readers/verifyEmail', { emailVerificationCode });
 
-  authByFacebook = (authToken: string) =>
+  authByFacebook = (authToken: string): Promise<AxiosResponse<AuthResponse>> =>
     this.post('/readers/authByFacebook', { authToken });
 
   // Articles
 
-  getReaderArticles = (page = 1, perPage = config.perPage) =>
+  getReaderArticles = (
+    page: number = 1,
+    perPage: number = config.perPage,
+  ): Promise<AxiosResponse<{ articles: ArticleDto[] }>> =>
     this.get('/readers/articles', { page, perPage });
 
-  getArticles = (page = 1, perPage = config.perPage) => {
-    // console.log(page);
+  getArticles = (
+    page: number = 1,
+    perPage: number = config.perPage,
+  ): Promise<AxiosResponse<{ articles: ArticleDto[] }>> => {
     return this.get('/articles', { page, perPage });
   };
 
-  getArticle = (articleId: string) => this.get(`/articles/${articleId}`);
+  getArticle = (
+    articleId: string,
+  ): Promise<AxiosResponse<{ article: ArticleDto }>> =>
+    this.get(`/articles/${articleId}`);
 
-  getRegionArticles = (regionId: string, page = 1, perPage = config.perPage) =>
+  getRegionArticles = (
+    regionId: string,
+    page: number = 1,
+    perPage: number = config.perPage,
+  ): Promise<AxiosResponse<{ articles: ArticleDto[] }>> =>
     this.get(`/regions/${regionId}/articles`, { page, perPage });
 
   getPublisherArticles = (
     publisherId: string,
-    page = 1,
-    perPage = config.perPage,
-  ) => this.get(`/publishers/${publisherId}/articles`, { page, perPage });
+    page: number = 1,
+    perPage: number = config.perPage,
+  ): Promise<AxiosResponse<{ articles: ArticleDto[] }>> =>
+    this.get(`/publishers/${publisherId}/articles`, { page, perPage });
 
   // Regions
 
-  getRegions = () => this.get('/regions');
+  getRegions = (): Promise<AxiosResponse<{ regions: RegionDto[] }>> =>
+    this.get('/regions');
 
-  getRegion = (regionId: string) => this.get(`/regions/${regionId}`);
+  getRegion = (
+    regionId: string,
+  ): Promise<AxiosResponse<{ region: RegionDto }>> =>
+    this.get(`/regions/${regionId}`);
 
-  getFollowedRegions = () => this.get('/readers/regions');
+  getFollowedRegions = (): Promise<AxiosResponse<{ regions: RegionDto[] }>> =>
+    this.get('/readers/regions');
 
-  followRegion = (regionId: string) =>
+  followRegion = (regionId: string): Promise<AxiosResponse<StatusResponse>> =>
     this.post(`/readers/regions/${regionId}`);
 
-  unfollowRegion = (regionId: string) =>
+  unfollowRegion = (regionId: string): Promise<AxiosResponse<StatusResponse>> =>
     this.delete(`/readers/regions/${regionId}`);
 
   // Saved Articles
 
-  getArticlesToRead = () => this.get('/readers/articlesToRead');
+  getArticlesToRead = (): Promise<AxiosResponse<{ articles: ArticleDto[] }>> =>
+    this.get('/readers/articlesToRead');
 
-  addArticleToRead = (articleId: string) =>
+  addArticleToRead = (
+    articleId: string,
+  ): Promise<AxiosResponse<StatusResponse>> =>
     this.post(`/readers/articlesToRead/${articleId}`);
 
-  removeArticleToRead = (articleId: string) =>
+  removeArticleToRead = (
+    articleId: string,
+  ): Promise<AxiosResponse<StatusResponse>> =>
     this.delete(`/readers/articlesToRead/${articleId}`);
 
   // Publisher
 
-  publisherRefreshToken = () => this.post('/publishers/refresh');
+  publisherRefreshToken = (): Promise<AxiosResponse<AuthResponse>> =>
+    this.post('/publishers/refresh');
 
-  getPublishers = () => this.get('/publishers');
+  getPublishers = (): Promise<
+    AxiosResponse<{ publishers: PublisherInListDto[] }>
+  > => this.get('/publishers');
 
-  getPublisherInformation = (publisherId: string) =>
+  getPublisherInformation = (
+    publisherId: string,
+  ): Promise<AxiosResponse<{ publisher: PublisherDto }>> =>
     this.get(`/publishers/${publisherId}`);
 
-  publisherLogin = (email: string, password: string, code: string) =>
-    this.post('/publishers/login', { email, password, code });
+  publisherLogin = (
+    email: string,
+    password: string,
+    code: string,
+  ): Promise<
+    AxiosResponse<{
+      token: string;
+      hasPassword: boolean;
+      articlesReported: string[];
+      publisherId: string;
+    }>
+  > => this.post('/publishers/login', { email, password, code });
 
-  getOwnArticles = (page = 1, perPage = config.perPage) =>
+  getOwnArticles = (
+    page: number = 1,
+    perPage: number = config.perPage,
+  ): Promise<AxiosResponse<{ articles: ArticleDto[]; countAll: number }>> =>
     this.get('/publishers/articles', { page, perPage });
 
-  getReportedArticles = (page = 1, perPage = config.perPage) =>
+  getReportedArticles = (
+    page: number = 1,
+    perPage: number = config.perPage,
+  ): Promise<AxiosResponse<{ articles: ArticleDto[]; countAll: number }>> =>
     this.get('/publishers/articlesReported', { page, perPage });
 
-  reportArticle = (articleId: string) =>
+  reportArticle = (articleId: string): Promise<AxiosResponse<StatusResponse>> =>
     this.post(`/publishers/articlesReported/${articleId}`);
 
-  undoReportArticle = (articleId: string) =>
+  undoReportArticle = (
+    articleId: string,
+  ): Promise<AxiosResponse<StatusResponse>> =>
     this.delete(`/publishers/articlesReported/${articleId}`);
 }
 

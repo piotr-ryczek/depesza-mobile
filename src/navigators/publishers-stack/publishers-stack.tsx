@@ -1,22 +1,34 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackScreenProps,
+} from '@react-navigation/stack';
 
 import { PublishersScreen } from 'screens/publishers';
-import { PublisherScreen } from 'screens/publisher';
 import { Hamburger } from 'components/hamburger';
 import { baseScreenOptions } from 'lib/header/config';
+import { DrawerParamList } from 'navigators/app-drawer';
 
-const Stack = createStackNavigator();
+export type PublishersStackParamList = {
+  Publishers: {};
+};
+
+const Stack = createStackNavigator<PublishersStackParamList>();
 const { Navigator, Screen } = Stack;
 
-export const PublishersStack = (props) => {
+type PublishersStackProps = StackScreenProps<
+  DrawerParamList,
+  'PublishersStack'
+>;
+
+export const PublishersStack = (props: PublishersStackProps) => {
   const { navigation } = props;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Navigator
-        initialRouteName="LoginStack"
+        initialRouteName="Publishers"
         screenOptions={{
           ...baseScreenOptions({ navigation }),
           headerRight: () => <Hamburger navigation={navigation} />,

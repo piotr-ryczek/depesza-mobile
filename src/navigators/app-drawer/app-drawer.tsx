@@ -1,12 +1,28 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerNavigationProp,
+} from '@react-navigation/drawer';
+import {
+  NavigatorScreenParams,
+  CompositeNavigationProp,
+} from '@react-navigation/native';
 
-import { ArticlesStack } from 'navigators/articles-stack';
-import { LoginStack } from 'navigators/login-stack';
-import { RegisterStack } from 'navigators/register-stack';
-import { PublishersStack } from 'navigators/publishers-stack';
-import { AboutStack } from 'navigators/about-stack';
+import {
+  ArticlesStack,
+  ArticlesStackParamList,
+} from 'navigators/articles-stack';
+import { LoginStack, LoginStackParamList } from 'navigators/login-stack';
+import {
+  RegisterStack,
+  RegisterStackParamList,
+} from 'navigators/register-stack';
+import {
+  PublishersStack,
+  PublishersStackParamList,
+} from 'navigators/publishers-stack';
+import { AboutStack, AboutStackParamList } from 'navigators/about-stack';
 import { SettingsScreen } from 'screens/settings';
 import { ConfirmEmailScreen } from 'screens/confirm-email';
 
@@ -18,7 +34,18 @@ import { log } from 'lib/helpers';
 
 import { DrawerContent } from './drawer-content';
 
-const Drawer = createDrawerNavigator();
+export type DrawerParamList = {
+  ArticlesStack: NavigatorScreenParams<ArticlesStackParamList>;
+  PublishersStack: NavigatorScreenParams<PublishersStackParamList>;
+  RegisterStack: NavigatorScreenParams<RegisterStackParamList>;
+  LoginStack: NavigatorScreenParams<LoginStackParamList>;
+  AboutStack: NavigatorScreenParams<AboutStackParamList>;
+  ConfirmEmail: {
+    verificationCode: string;
+  };
+};
+
+const Drawer = createDrawerNavigator<DrawerParamList>();
 const { Navigator, Screen } = Drawer;
 
 export const AppDrawer = () => {
@@ -38,7 +65,7 @@ export const AppDrawer = () => {
   return (
     <Navigator
       drawerPosition="right"
-      initialRouteName="AppDrawer"
+      initialRouteName="ArticlesStack"
       drawerContent={(props) => (
         <DrawerContent {...props} jwtToken={jwtToken} />
       )}>

@@ -17,7 +17,9 @@ export const cleanText = (text) => {
 };
 
 export const cleanFromTags = (el) => {
-  const { children, name } = el;
+  const { children, type, data } = el;
+
+  if (type === 'text') return cleanText(data);
 
   const text = children
     .map((childNode) => {

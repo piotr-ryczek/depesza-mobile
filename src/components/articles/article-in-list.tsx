@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   Text,
   View,
@@ -15,8 +15,13 @@ import dateFormat from 'lib/date-format';
 import { Separator } from 'components/content';
 import { SPACE, FONT_FAMILY_TEXT } from 'styles';
 import { HtmlParser } from 'components/html-parser';
+import { ArticleDto } from 'types';
 
-export const ArticleInList = (props) => {
+type ArticleInListProps = {
+  article: ArticleDto;
+};
+
+export const ArticleInList = memo((props: ArticleInListProps) => {
   const { article } = props;
 
   const navigation = useNavigation();
@@ -114,7 +119,7 @@ export const ArticleInList = (props) => {
       <Separator />
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   publisherLogoWrapper: {

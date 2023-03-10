@@ -13,7 +13,7 @@ import {
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { Loading } from 'components/loading';
-import { basicReducer } from 'lib/basic-reducer';
+import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import api from 'lib/api';
 import { loginReader, handleError } from 'state/actions';
 import { showToast } from 'lib/helpers';
@@ -27,16 +27,24 @@ import {
 } from 'components/form';
 import { Separator } from 'components/content';
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
 export const LoginScreen = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [formValues, setFormValues] = useReducer(basicReducer, {
-    email: '',
-    password: '',
-  });
+  const [formValues, setFormValues] = useReducer<BasicReducer<FormValues>>(
+    basicReducer,
+    {
+      email: '',
+      password: '',
+    },
+  );
 
   const handleTextChange = (fieldName: string) => (value: string) => {
     setFormValues({

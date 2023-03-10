@@ -8,8 +8,13 @@ import { PageWrapper } from 'components/page';
 import { Paragraph } from 'components/content';
 import { UrlButton } from 'components/url-button';
 import { clearUrl } from 'lib/helpers';
+import { PublisherDto } from 'types';
 
-export const Publisher = (props) => {
+type PublisherProps = {
+  publisher: PublisherDto;
+};
+
+export const Publisher = (props: PublisherProps) => {
   const { publisher } = props;
 
   if (!publisher) return null;
@@ -37,9 +42,9 @@ export const Publisher = (props) => {
         />
       </View>
       {/* Description */}
-      <Paragraph>{description}</Paragraph>
+      {!!description && <Paragraph>{description}</Paragraph>}
       {/* Authors */}
-      {!!authors && (authors || []).length && (
+      {!!authors && (authors || []).length > 0 && (
         <Paragraph>Autorzy: {authors.join(', ')}</Paragraph>
       )}
       {/* Patronite */}

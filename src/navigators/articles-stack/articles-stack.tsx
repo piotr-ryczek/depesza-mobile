@@ -1,7 +1,10 @@
 import React, { useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackScreenProps,
+} from '@react-navigation/stack';
 
 import { BottomSheetWrapper } from 'components/bottom-sheet-wrapper';
 import { ArticlesHeaderTitle } from 'components/articles-header-title';
@@ -19,11 +22,36 @@ import { ReportedArticlesScreen } from 'screens/reported-articles';
 import { UserRole } from 'types';
 import { baseScreenOptions } from 'lib/header/config';
 import { fetchRegions } from 'state/actions';
+import { DrawerParamList } from 'navigators/app-drawer';
 
-const Stack = createStackNavigator();
+export type ArticlesStackParamList = {
+  Dashboard: {};
+  AllArticles: {};
+  Article: {
+    articleId: string;
+    regionTitle: string;
+    regionTitleFromParams?: string;
+  };
+  Regions: {};
+  Region: {
+    regionId: string;
+    regionTitle: string;
+    regionTitleFromParams?: string;
+  };
+  SavedArticles: {};
+  OwnArticles: {};
+  ReportedArticles: {};
+  Publisher: {
+    publisherId: string;
+  };
+};
+
+const Stack = createStackNavigator<ArticlesStackParamList>();
 const { Navigator, Screen } = Stack;
 
-export const ArticlesStack = (props) => {
+type ArticlesStackProps = StackScreenProps<DrawerParamList, 'ArticlesStack'>;
+
+export const ArticlesStack = (props: ArticlesStackProps) => {
   const { navigation } = props;
 
   const dispatch = useDispatch();
@@ -104,7 +132,7 @@ export const ArticlesStack = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Navigator
-        initialRouteName="ArticlesStack"
+        initialRouteName="AllArticles"
         screenOptions={{
           ...baseScreenOptions({ navigation }),
         }}>

@@ -1,20 +1,30 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackScreenProps,
+} from '@react-navigation/stack';
 
 import { AboutScreen } from 'screens/about';
 import { baseScreenOptions } from 'lib/header/config';
+import { DrawerParamList } from 'navigators/app-drawer';
 
-const Stack = createStackNavigator();
+export type AboutStackParamList = {
+  About: {};
+};
+
+const Stack = createStackNavigator<AboutStackParamList>();
 const { Navigator, Screen } = Stack;
 
-export const AboutStack = (props) => {
+type AboutStackProps = StackScreenProps<DrawerParamList, 'AboutStack'>;
+
+export const AboutStack = (props: AboutStackProps) => {
   const { navigation } = props;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Navigator
-        initialRouteName="AboutStack"
+        initialRouteName="About"
         screenOptions={{
           ...baseScreenOptions({ navigation }),
         }}>

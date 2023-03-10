@@ -8,25 +8,40 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { Button, Text as NativeBaseText } from 'native-base';
+import { StackScreenProps } from '@react-navigation/stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 
 import api from 'lib/api';
 import { loginReader } from 'state/actions';
 import { screenStyles } from 'styles';
 import { Loading } from 'components/loading';
-import { basicReducer } from 'lib/basic-reducer';
+import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import { PageWrapper } from 'components/page';
 import { FormSpace } from 'components/form';
 import { showToast } from 'lib/helpers';
 import { ToastType } from 'types';
+import { DrawerParamList } from 'navigators/app-drawer';
 
-export const ConfirmEmailScreen = (props) => {
-  const route = useRoute();
-  const navigation = useNavigation();
+type ConfirmEmailScreenProps = DrawerScreenProps<
+  DrawerParamList,
+  'ConfirmEmail'
+>;
+
+type ConfirmEmailState = {
+  hasFailed: boolean;
+  isLoading: boolean;
+};
+
+export const ConfirmEmailScreen = (props: ConfirmEmailScreenProps) => {
+  const { route, navigation } = props;
   const dispatch = useDispatch();
-  const [state, setState] = useReducer(basicReducer, {
-    hasFailed: false,
-    isLoading: false,
-  });
+  const [state, setState] = useReducer<BasicReducer<ConfirmEmailState>>(
+    basicReducer,
+    {
+      hasFailed: false,
+      isLoading: false,
+    },
+  );
 
   const { hasFailed, isLoading } = state;
 
@@ -98,5 +113,3 @@ export const ConfirmEmailScreen = (props) => {
     </ScrollView>
   );
 };
-
-// 258f21050f6a78f0766bea58dc65a9

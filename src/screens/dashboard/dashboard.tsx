@@ -1,11 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { screenStyles } from 'styles';
 import { Articles } from 'components/articles';
 import api from 'lib/api';
+import { ArticlesStackParamList } from 'navigators/articles-stack';
 
-export const DashboardScreen = (props) => {
+type DashboardScreenProps = StackScreenProps<
+  ArticlesStackParamList,
+  'Dashboard'
+>;
+
+export const DashboardScreen = (props: DashboardScreenProps) => {
   const { navigation } = props;
 
   return (

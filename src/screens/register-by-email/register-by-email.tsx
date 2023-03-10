@@ -1,5 +1,7 @@
 import React, { useReducer, useCallback } from 'react';
 import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import {
   Button,
   Item,
@@ -9,15 +11,20 @@ import {
   Icon,
 } from 'native-base';
 import { useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  RouteProp,
+} from '@react-navigation/native';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { handleError } from 'state/actions';
 import { Loading } from 'components/loading';
-import { basicReducer } from 'lib/basic-reducer';
+import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import api from 'lib/api';
 import { showToast, prepareValidationErrors } from 'lib/helpers';
 import { screenStyles, formStyles } from 'styles';
-import { ToastType } from 'types';
+import { FieldValidationErrors, ToastType } from 'types';
 import {
   FormSection,
   FormSpace,
@@ -25,12 +32,38 @@ import {
   ItemWrapper,
   InputError,
 } from 'components/form';
+import { RegisterStackParamList } from 'navigators/register-stack';
+import { DrawerParamList } from 'navigators/app-drawer';
 
-export const RegisterByEmailScreen = (props) => {
+type RegisterByEmailScreenProps = {
+  navigation: CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList>,
+    StackNavigationProp<RegisterStackParamList, 'RegisterByEmail'>
+  >;
+  route: RouteProp<RegisterStackParamList, 'RegisterByEmail'>;
+};
+
+type RegisterByEmailScreenState = {
+  isLoading: boolean;
+  registrationComplete: boolean;
+  isPasswordVisible: boolean;
+  isRepeatPasswordVisible: boolean;
+  validationErrors: FieldValidationErrors;
+};
+
+type FormValues = {
+  email: string;
+  password: string;
+  repeatPassword: string;
+};
+
+export const RegisterByEmailScreen = (props: RegisterByEmailScreenProps) => {
   const { navigation } = props;
 
   const dispatch = useDispatch();
-  const [state, setState] = useReducer(basicReducer, {
+  const [state, setState] = useReducer<
+    BasicReducer<RegisterByEmailScreenState>
+  >(basicReducer, {
     isLoading: false,
     registrationComplete: false,
     isPasswordVisible: false,
@@ -38,11 +71,14 @@ export const RegisterByEmailScreen = (props) => {
     validationErrors: {},
   });
 
-  const [formValues, setFormValues] = useReducer(basicReducer, {
-    email: '',
-    password: '',
-    repeatPassword: '',
-  });
+  const [formValues, setFormValues] = useReducer<BasicReducer<FormValues>>(
+    basicReducer,
+    {
+      email: '',
+      password: '',
+      repeatPassword: '',
+    },
+  );
 
   const {
     isLoading,
@@ -55,7 +91,7 @@ export const RegisterByEmailScreen = (props) => {
 
   // Handlers
 
-  const handleTextChange = (fieldName) => (value) => {
+  const handleTextChange = (fieldName: string) => (value: string) => {
     setFormValues({
       [fieldName]: value,
     });
@@ -87,6 +123,10 @@ export const RegisterByEmailScreen = (props) => {
         });
       }
 
+      setFormValues({
+        password: '',
+        repeatPassword: '',
+      });
       setState(newState);
       dispatch(handleError(error, 'Błędna rejestracja', false));
     }
@@ -147,7 +187,7 @@ export const RegisterByEmailScreen = (props) => {
               primary
               full
               rounded
-              onPress={() => navigation.navigate('ArticlesStack')}>
+              onPress={() => navigation.navigate('ArticlesStack' as never)}>
               <NativeBaseText>Wróc do artykułów</NativeBaseText>
             </Button>
           </FormSection>
@@ -160,6 +200,7 @@ export const RegisterByEmailScreen = (props) => {
                   onChangeText={handleTextChange('email')}
                   autoCompleteType="email"
                   keyboardType="email-address"
+                  value={email}
                 />
               </Item>
               <InputError error={validationErrors.email} />
@@ -170,6 +211,7 @@ export const RegisterByEmailScreen = (props) => {
                 <Input
                   secureTextEntry={!isPasswordVisible}
                   onChangeText={handleTextChange('password')}
+                  value={password}
                 />
               </Item>
               <InputError error={validationErrors.password} />
@@ -195,6 +237,7 @@ export const RegisterByEmailScreen = (props) => {
                 <Input
                   secureTextEntry={!isRepeatPasswordVisible}
                   onChangeText={handleTextChange('repeatPassword')}
+                  value={repeatPassword}
                 />
               </Item>
               <InputError error={validationErrors.repeatPassword} />
