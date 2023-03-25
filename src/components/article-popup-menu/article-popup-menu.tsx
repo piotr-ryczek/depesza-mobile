@@ -22,8 +22,13 @@ import {
   handleError,
 } from 'state/actions';
 
-export const ArticlePopupMenu = (props) => {
-  const { articleId, publisherId: publishedBy } = props;
+type ArticlePopupMenuProps = {
+  articleId: string;
+  publisherId: string;
+};
+
+export const ArticlePopupMenu = (props: ArticlePopupMenuProps) => {
+  const { articleId, publisherId: publishedById } = props;
   const menuRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -121,12 +126,12 @@ export const ArticlePopupMenu = (props) => {
 
       // TODO: In future
       // actionsList.push({
-      //   action: () => console.log('Wysłano na Kindle'),
+      //   action: () => console.log('Send to Kindle'),
       //   label: 'Wyślij na Kindle',
       // });
     }
     // Publisher
-    else if (isLoggedPublisher && publishedBy !== publisherId) {
+    else if (isLoggedPublisher && publishedById !== publisherId) {
       if (reportedArticles.includes(articleId)) {
         actionsList.push({
           action: () => handleUndoReportArticle(),
@@ -149,7 +154,10 @@ export const ArticlePopupMenu = (props) => {
     console.log('Błąd');
   };
 
-  const handlePress = async (_, actionIndex) => {
+  const handlePress: (item: string, index: number | undefined) => void = async (
+    _,
+    actionIndex,
+  ) => {
     if (actionIndex === undefined) return;
 
     await actions[actionIndex].action();
@@ -157,6 +165,7 @@ export const ArticlePopupMenu = (props) => {
 
   const handleMenuPress = () => {
     UIManager.showPopupMenu(
+      // @ts-ignore
       findNodeHandle(menuRef?.current),
       actionLabels,
       handleShowPopupError,

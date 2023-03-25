@@ -1,4 +1,6 @@
-export const getItem = (data, index) => {
+import { ArticleDto } from 'types';
+
+export const getItem = (data: ArticleDto[], index: number) => {
   const item = data[index];
 
   return {
@@ -7,6 +9,6 @@ export const getItem = (data, index) => {
     key: item._id,
   };
 };
-export const getItemCount = (data) => data.length;
+export const getItemCount = (data: ArticleDto[]) => data.length;
 
-export const getKey = (item) => item._id.toString();
+export const getKey = (item: ArticleDto) => item._id.toString();

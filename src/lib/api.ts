@@ -16,6 +16,13 @@ type AuthResponse = {
   hasAccess: boolean;
 };
 
+type AuthResponsePublisher = {
+  token: string;
+  hasPassword: boolean;
+  articlesReported: string[];
+  publisherId: string;
+};
+
 type DataType = 'query' | 'body';
 
 class Api {
@@ -169,7 +176,7 @@ class Api {
 
   // Publisher
 
-  publisherRefreshToken = (): Promise<AxiosResponse<AuthResponse>> =>
+  publisherRefreshToken = (): Promise<AxiosResponse<AuthResponsePublisher>> =>
     this.post('/publishers/refresh');
 
   getPublishers = (): Promise<
@@ -185,14 +192,8 @@ class Api {
     email: string,
     password: string,
     code: string,
-  ): Promise<
-    AxiosResponse<{
-      token: string;
-      hasPassword: boolean;
-      articlesReported: string[];
-      publisherId: string;
-    }>
-  > => this.post('/publishers/login', { email, password, code });
+  ): Promise<AxiosResponse<AuthResponsePublisher>> =>
+    this.post('/publishers/login', { email, password, code });
 
   getOwnArticles = (
     page: number = 1,

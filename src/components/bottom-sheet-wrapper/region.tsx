@@ -8,16 +8,19 @@ import { Icon } from 'react-native-elements';
 import { AppState } from 'state/app-state';
 import config from 'lib/config';
 import useBottomSheet from 'lib/hooks/use-bottom-sheet';
-import { UserRole } from 'types';
+import { BottomSheetRegionGroupDataItem, UserRole, ToastType } from 'types';
 import { followRegion, unfollowRegion, handleError } from 'state/actions';
 import api from 'lib/api';
 import { getCurrentRoute, showToast } from 'lib/helpers';
-import { ToastType } from 'types';
 import { ACTIVE_OPACITY } from 'styles';
 
 import { itemStyles } from './styles';
 
-export const Region = (props) => {
+type RegionProps = {
+  region: BottomSheetRegionGroupDataItem;
+};
+
+export const Region = (props: RegionProps) => {
   const { region } = props;
   const { bottomSheetRef } = useBottomSheet();
   const navigation = useNavigation();
@@ -38,7 +41,9 @@ export const Region = (props) => {
   // Handlers
 
   const handleGoToRegion = () => {
+    // @ts-ignore
     bottomSheetRef.current.snapTo(1);
+
     setTimeout(
       () => navigation.navigate('Region', { regionId: id, regionTitle: title }),
       0,

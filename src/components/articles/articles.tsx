@@ -101,6 +101,7 @@ export const Articles = (props: ArticlesProps) => {
   // Side Effects
   useEffect(() => {
     if (listRef.current) {
+      // @ts-ignore
       listRef.current.scrollToOffset({ x: 0, y: 0, animated: false });
     }
 

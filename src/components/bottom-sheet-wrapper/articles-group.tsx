@@ -6,9 +6,14 @@ import { Icon } from 'react-native-elements';
 import { ACTIVE_OPACITY } from 'styles';
 import useBottomSheet from 'lib/hooks/use-bottom-sheet';
 import { getCurrentRoute } from 'lib/helpers';
+import { BottomSheetArticlesGroupDataItem } from 'types';
 import { itemStyles } from './styles';
 
-export const ArticlesGroup = (props) => {
+type ArticlesGroupProps = {
+  group: BottomSheetArticlesGroupDataItem;
+};
+
+export const ArticlesGroup = (props: ArticlesGroupProps) => {
   const { group } = props;
   const navigation = useNavigation();
   const currentRoute = useNavigationState(getCurrentRoute); // TODO: Should all logic be moved upper to ArticlesStack
@@ -21,6 +26,7 @@ export const ArticlesGroup = (props) => {
     (route === 'Dashboard' && currentRoute.name === 'ArticlesStack'); // TODO: Refactor
 
   const handleGo = () => {
+    // @ts-ignore
     bottomSheetRef.current.snapTo(1);
     setTimeout(() => navigation.navigate(route), 0);
   };

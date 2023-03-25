@@ -19,7 +19,11 @@ import { PublisherScreen } from 'screens/publisher';
 import { SavedArticlesScreen } from 'screens/saved-articles';
 import { OwnArticlesScreen } from 'screens/own-articles';
 import { ReportedArticlesScreen } from 'screens/reported-articles';
-import { UserRole } from 'types';
+import {
+  BottomSheetGroup,
+  BottomSheetArticlesGroupDataItem,
+  UserRole,
+} from 'types';
 import { baseScreenOptions } from 'lib/header/config';
 import { fetchRegions } from 'state/actions';
 import { DrawerParamList } from 'navigators/app-drawer';
@@ -62,8 +66,8 @@ export const ArticlesStack = (props: ArticlesStackProps) => {
   const isLoggedReader = !!(jwtToken && role === UserRole.READER);
   const isLoggedPublisher = !!(jwtToken && role === UserRole.PUBLISHER);
 
-  const articlesGroups = useMemo(() => {
-    const dataItems = [];
+  const articlesGroups: BottomSheetGroup[] = useMemo(() => {
+    const dataItems: BottomSheetArticlesGroupDataItem[] = [];
 
     if (isLoggedReader) {
       dataItems.push({
@@ -111,14 +115,13 @@ export const ArticlesStack = (props: ArticlesStackProps) => {
       });
     }
 
-    return [
-      {
-        title: 'Twoje',
-        index: 0,
-        data: dataItems,
-      },
-      ...regionGroups,
-    ];
+    const articlesGroup: BottomSheetGroup = {
+      title: 'Twoje',
+      index: 0,
+      data: dataItems,
+    };
+
+    return [articlesGroup, ...regionGroups];
   }, [isLoggedReader, isLoggedPublisher, regionGroups]);
 
   // Side Effects
@@ -210,7 +213,7 @@ export const ArticlesStack = (props: ArticlesStackProps) => {
         />
       </Navigator>
 
-      <BottomSheetWrapper articlesGroups={articlesGroups} />
+      <BottomSheetWrapper groups={articlesGroups} />
     </SafeAreaView>
   );
 };

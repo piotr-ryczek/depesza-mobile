@@ -1,9 +1,17 @@
 import React from 'react';
 
+import {
+  BottomSheetDataRegionGroup,
+  BottomSheetDataArticlesGroup,
+} from 'types';
 import { Region } from './region';
 import { ArticlesGroup } from './articles-group';
 
-export const SectionItem = (props) => {
+type SectionItemProps = {
+  item: BottomSheetDataArticlesGroup | BottomSheetDataRegionGroup;
+};
+
+export const SectionItem = (props: SectionItemProps) => {
   const { item } = props;
   const { type } = item;
 

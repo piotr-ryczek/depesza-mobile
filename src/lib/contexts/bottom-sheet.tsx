@@ -1,4 +1,4 @@
-import React, { createContext, useState, useRef } from 'react';
+import React, { createContext, useState, useRef, ReactNode } from 'react';
 
 export const BottomSheetContext = createContext({
   bottomSheetRef: null,
@@ -7,12 +7,17 @@ export const BottomSheetContext = createContext({
 
 export const BottomSheetConsumer = BottomSheetContext.Consumer;
 
-export const BottomSheetProvider = (props) => {
+type BottomSheetProviderProps = {
+  children: ReactNode;
+};
+
+export const BottomSheetProvider = (props: BottomSheetProviderProps) => {
   const { children } = props;
 
   const [bottomSheetRef, setBottomSheetRef] = useState();
 
   return (
+    // @ts-ignore
     <BottomSheetContext.Provider value={{ bottomSheetRef, setBottomSheetRef }}>
       {children}
     </BottomSheetContext.Provider>

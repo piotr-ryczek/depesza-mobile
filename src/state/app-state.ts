@@ -1,10 +1,10 @@
-import { UserRole, RegionGroup } from 'types';
+import { UserRole, BottomSheetGroup } from 'types';
 
 export type AppState = {
   jwtToken: string;
   role: UserRole | null;
   publisherId: string;
-  regionGroups: RegionGroup[];
+  regionGroups: BottomSheetGroup[];
   savedArticles: string[];
   followedRegions: string[];
   reportedArticles: string[];

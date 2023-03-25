@@ -88,7 +88,11 @@ export const ArticleInList = memo((props: ArticleInListProps) => {
             resizeMode="cover"
             style={[articleStyles.thumbnail, styles.thumbnail]}>
             <View style={articleStyles.popupMenuWrapper}>
-              <ArticlePopupMenu articleId={id} publisherId={publisherId} />
+              <ArticlePopupMenu
+                articleId={id}
+                publisherId={publisherId}
+                publishedById={}
+              />
             </View>
           </ImageBackground>
         </TouchableOpacity>

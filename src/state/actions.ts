@@ -1,6 +1,8 @@
+import { AxiosError } from 'axios';
+
 import api from 'lib/api';
 import { LoginManager } from 'react-native-fbsdk';
-import { UserRole, ToastType } from 'types';
+import { UserRole, ToastType, BottomSheetGroup } from 'types';
 import { showToast } from 'lib/helpers';
 
 import { AppState } from './app-state';
@@ -45,13 +47,13 @@ export const refreshToken = () => async (dispatch, getState) => {
     if (role === UserRole.PUBLISHER) {
       const { data } = await api.publisherRefreshToken();
 
-      const { token: jwtToken, reportedArticles, publisherId } = data;
+      const { token: jwtToken, articlesReported, publisherId } = data;
 
       dispatch({
         type: LOGIN_PUBLISHER,
         payload: {
           jwtToken,
-          reportedArticles,
+          reportedArticles: articlesReported,
           publisherId,
         },
       });
@@ -124,13 +126,17 @@ export const fetchRegions = () => async (dispatch) => {
   const { data } = await api.getRegions();
   const { regions } = data;
 
-  const regionGroups = regions.reduce(
+  const regionGroups: BottomSheetGroup[] = regions.reduce<BottomSheetGroup[]>(
     (acc, region) => {
       const { _id: regionId, title, iconUrl, continent } = region;
 
       const regionsGroup = acc.find(
         ({ title: continentGroupName }) => continentGroupName === continent,
       );
+
+      if (!regionsGroup) {
+        return acc;
+      }
 
       regionsGroup.data.push({
         title,

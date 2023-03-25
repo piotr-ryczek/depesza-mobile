@@ -2,6 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 
+import {
+  BottomSheetGroup,
+  BottomSheetArticlesGroupDataItem,
+  BottomSheetRegionGroupDataItem,
+} from 'types';
 import useBottomSheet from 'lib/hooks/use-bottom-sheet';
 
 import { Handle } from './handle';
@@ -10,15 +15,22 @@ import { SectionItem } from './section-item';
 
 const windowHeight = Dimensions.get('window').height;
 
-const keyExtractor = ({ id }) => id;
+const keyExtractor = ({
+  id,
+}: BottomSheetArticlesGroupDataItem | BottomSheetRegionGroupDataItem) => id;
 
-export const BottomSheetWrapper = (props) => {
-  const { articlesGroups } = props;
+type BottomSheetWrapperProps = {
+  groups: BottomSheetGroup[];
+};
+
+export const BottomSheetWrapper = (props: BottomSheetWrapperProps) => {
+  const { groups } = props;
   const bottomSheetRef = useRef(null);
 
   const { setBottomSheetRef } = useBottomSheet();
 
   useEffect(() => {
+    // @ts-ignore
     setBottomSheetRef(bottomSheetRef);
   }, []);
 
@@ -28,7 +40,7 @@ export const BottomSheetWrapper = (props) => {
       snapPoints={[0, windowHeight]}
       initialSnapIndex={1}
       renderHandle={Handle}
-      sections={articlesGroups}
+      sections={groups}
       keyExtractor={keyExtractor}
       renderSectionHeader={SectionHeader}
       renderItem={SectionItem}
