@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
 import { ScrollView } from 'react-native';
-import { useDispatch } from 'react-redux';
 import type { StackScreenProps } from '@react-navigation/stack';
 
 import api from 'lib/api';
@@ -12,6 +11,7 @@ import { Loading } from 'components/loading';
 import { handleError } from 'state/actions';
 import { ArticlesStackParamList } from 'navigators/articles-stack';
 import { ArticleDto } from 'types';
+import { useAppDispatch } from 'lib/hooks';
 
 type ArticleScreenProps = StackScreenProps<ArticlesStackParamList, 'Article'>;
 
@@ -28,7 +28,7 @@ export const ArticleScreen = (props: ArticleScreenProps) => {
     params: { articleId, regionTitle: regionTitleFromParams = '' },
   } = route;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [state, setState] = useReducer<BasicReducer<ArticleScreenState>>(
     basicReducer,
     {

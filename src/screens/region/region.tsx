@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import { View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { BasicReducer, basicReducer } from 'lib/basic-reducer';
@@ -9,6 +8,7 @@ import api from 'lib/api';
 import { Articles } from 'components/articles';
 import { handleError } from 'state/actions';
 import { ArticlesStackParamList } from 'navigators/articles-stack';
+import { useAppDispatch } from 'lib/hooks';
 
 type RegionScreenProps = StackScreenProps<ArticlesStackParamList, 'Region'>;
 
@@ -22,7 +22,7 @@ export const RegionScreen = (props: RegionScreenProps) => {
     params: { regionId, regionTitle: regionTitleFromParams = '' },
   } = route;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [state, setState] = useReducer<BasicReducer<RegionState>>(
     basicReducer,
     {

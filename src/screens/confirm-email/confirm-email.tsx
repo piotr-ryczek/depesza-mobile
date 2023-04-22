@@ -1,14 +1,7 @@
 import React, { useCallback, useReducer } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
-import {
-  useFocusEffect,
-  CommonActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { useFocusEffect, CommonActions } from '@react-navigation/native';
 import { Button, Text as NativeBaseText } from 'native-base';
-import { StackScreenProps } from '@react-navigation/stack';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 
 import api from 'lib/api';
@@ -21,6 +14,7 @@ import { FormSpace } from 'components/form';
 import { showToast } from 'lib/helpers';
 import { ToastType } from 'types';
 import { DrawerParamList } from 'navigators/app-drawer';
+import { useAppDispatch } from 'lib/hooks';
 
 type ConfirmEmailScreenProps = DrawerScreenProps<
   DrawerParamList,
@@ -34,7 +28,7 @@ type ConfirmEmailState = {
 
 export const ConfirmEmailScreen = (props: ConfirmEmailScreenProps) => {
   const { route, navigation } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [state, setState] = useReducer<BasicReducer<ConfirmEmailState>>(
     basicReducer,
     {

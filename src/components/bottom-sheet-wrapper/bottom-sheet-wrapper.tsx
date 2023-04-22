@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, BackHandler } from 'react-native';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 
 import {
@@ -7,7 +7,7 @@ import {
   BottomSheetArticlesGroupDataItem,
   BottomSheetRegionGroupDataItem,
 } from 'types';
-import useBottomSheet from 'lib/hooks/use-bottom-sheet';
+import { useBottomSheet } from 'lib/hooks';
 
 import { Handle } from './handle';
 import { SectionHeader } from './section-header';
@@ -32,6 +32,24 @@ export const BottomSheetWrapper = (props: BottomSheetWrapperProps) => {
   useEffect(() => {
     // @ts-ignore
     setBottomSheetRef(bottomSheetRef);
+  }, []);
+
+  const backAction = () => {
+    if (bottomSheetRef.current.prevSnapIndex === 0) {
+      bottomSheetRef.current.snapTo(1);
+      return true;
+    }
+
+    return false;
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   return (

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Text as NativeBaseText, Icon } from 'native-base';
@@ -13,10 +12,11 @@ import { screenStyles, formStyles } from 'styles';
 import { ToastType } from 'types';
 import { FormSection, FormSpace, FormWrapper } from 'components/form';
 import { Separator } from 'components/content';
+import { useAppDispatch } from 'lib/hooks';
 
 export const RegisterScreen = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFacebookRegister = async () => {

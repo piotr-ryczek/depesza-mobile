@@ -8,10 +8,15 @@ import {
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import { articleStyles } from 'styles';
+import { articleStyles, ACTIVE_OPACITY } from 'styles';
 import config from 'lib/config';
+import { PublisherInListDto } from 'types';
 
-export const PublisherInList = (props) => {
+type PublisherInListProps = {
+  publisher: PublisherInListDto;
+};
+
+export const PublisherInList = (props: PublisherInListProps) => {
   const { publisher } = props;
 
   const navigation = useNavigation();
@@ -23,28 +28,28 @@ export const PublisherInList = (props) => {
   };
 
   return (
-    // <TouchableOpacity onPress={goTo} activeOpacity={ACTIVE_OPACITY}>
-    <View style={[articleStyles.header, styles.header]}>
-      <View style={styles.publisherLogoWrapper}>
-        <ImageBackground
-          source={{
-            uri: `${config.apiUrl}/uploads/${logoUrl}`,
-          }}
-          resizeMode="contain"
-          style={styles.publisherLogo}
-        />
+    <TouchableOpacity onPress={goTo} activeOpacity={ACTIVE_OPACITY}>
+      <View style={[articleStyles.header, styles.header]}>
+        <View style={styles.publisherLogoWrapper}>
+          <ImageBackground
+            source={{
+              uri: `${config.apiUrl}/uploads/${logoUrl}`,
+            }}
+            resizeMode="contain"
+            style={styles.publisherLogo}
+          />
+        </View>
+        <View style={styles.publisherTitleWrapper}>
+          <Text
+            style={{
+              ...articleStyles.publisherTitle,
+              ...styles.publisherTitle,
+            }}>
+            {name}
+          </Text>
+        </View>
       </View>
-      <View style={styles.publisherTitleWrapper}>
-        <Text
-          style={{
-            ...articleStyles.publisherTitle,
-            ...styles.publisherTitle,
-          }}>
-          {name}
-        </Text>
-      </View>
-    </View>
-    // </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 

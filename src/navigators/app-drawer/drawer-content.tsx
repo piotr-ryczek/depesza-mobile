@@ -4,19 +4,26 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
   DrawerItem,
+  DrawerContentComponentProps,
+  DrawerContentOptions,
 } from '@react-navigation/drawer';
-import { useDispatch } from 'react-redux';
 
 import { showToast } from 'lib/helpers';
 import { logout } from 'state/actions';
 import { ToastType } from 'types';
 import { FONT_FAMILY_HEADER } from 'styles';
+import { useAppDispatch } from 'lib/hooks';
 
-export const DrawerContent = (props) => {
+interface DrawerContentProps
+  extends DrawerContentComponentProps<DrawerContentOptions> {
+  jwtToken: string;
+}
+
+export const DrawerContent = (props: DrawerContentProps) => {
   const { jwtToken, state, ...rest } = props;
   const { navigation } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
     Alert.alert(

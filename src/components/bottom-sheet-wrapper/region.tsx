@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, ActivityIndicator } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 
 import { AppState } from 'state/app-state';
 import config from 'lib/config';
-import useBottomSheet from 'lib/hooks/use-bottom-sheet';
+import { useBottomSheet, useAppDispatch, useAppSelector } from 'lib/hooks';
 import { BottomSheetRegionGroupDataItem, UserRole, ToastType } from 'types';
 import { followRegion, unfollowRegion, handleError } from 'state/actions';
 import api from 'lib/api';
@@ -25,10 +24,10 @@ export const Region = (props: RegionProps) => {
   const { bottomSheetRef } = useBottomSheet();
   const navigation = useNavigation();
   const currentRoute = useNavigationState(getCurrentRoute); // TODO: Should all logic be moved upper to ArticlesStack
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { jwtToken, role, followedRegions } = useSelector(
+  const { jwtToken, role, followedRegions } = useAppSelector(
     (state: AppState) => state,
   ); // TODO: Also should be moved upper to ArticlesStack
 

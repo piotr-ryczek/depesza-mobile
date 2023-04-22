@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
 import { SafeAreaView } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import { BasicReducer, basicReducer } from 'lib/basic-reducer';
 import { screenStyles } from 'styles';
@@ -9,6 +8,7 @@ import { Loading } from 'components/loading';
 import { Publishers } from 'components/publishers';
 import { handleError } from 'state/actions';
 import { PublisherInListDto } from 'types';
+import { useAppDispatch } from 'lib/hooks';
 
 type PublishersScreenState = {
   isLoading: boolean;
@@ -16,7 +16,7 @@ type PublishersScreenState = {
 };
 
 export const PublishersScreen = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [state, setState] = useReducer<BasicReducer<PublishersScreenState>>(
     basicReducer,
     {

@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   createDrawerNavigator,
-  DrawerNavigationProp,
+  DrawerContentComponentProps,
+  DrawerContentOptions,
 } from '@react-navigation/drawer';
-import {
-  NavigatorScreenParams,
-  CompositeNavigationProp,
-} from '@react-navigation/native';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 import {
   ArticlesStack,
@@ -23,13 +20,12 @@ import {
   PublishersStackParamList,
 } from 'navigators/publishers-stack';
 import { AboutStack, AboutStackParamList } from 'navigators/about-stack';
-import { SettingsScreen } from 'screens/settings';
 import { ConfirmEmailScreen } from 'screens/confirm-email';
 
 import { AppState } from 'state/app-state';
 import { refreshToken } from 'state/actions';
 import { UserRole } from 'types';
-
+import { useAppSelector, useAppDispatch } from 'lib/hooks';
 import { log } from 'lib/helpers';
 
 import { DrawerContent } from './drawer-content';
@@ -49,8 +45,8 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 const { Navigator, Screen } = Drawer;
 
 export const AppDrawer = () => {
-  const dispatch = useDispatch();
-  const { jwtToken, role, hasAccess } = useSelector((state: AppState) => state);
+  const dispatch = useAppDispatch();
+  const { jwtToken, role, hasAccess } = useAppSelector((state) => state);
 
   useEffect(() => {
     if (jwtToken) {
@@ -66,9 +62,9 @@ export const AppDrawer = () => {
     <Navigator
       drawerPosition="right"
       initialRouteName="ArticlesStack"
-      drawerContent={(props) => (
-        <DrawerContent {...props} jwtToken={jwtToken} />
-      )}>
+      drawerContent={(
+        props: DrawerContentComponentProps<DrawerContentOptions>,
+      ) => <DrawerContent {...props} jwtToken={jwtToken} />}>
       <Screen
         name="ArticlesStack"
         options={{ title: 'Artykuły' }}

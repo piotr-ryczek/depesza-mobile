@@ -76,7 +76,6 @@ class Api {
     axios.delete(`${this.apiUrl}${url}`, this.getConfig(body, 'body'));
 
   get = <T>(url: string, query = {}): Promise<AxiosResponse<T>> => {
-    console.log(`${this.apiUrl}${url}`);
     return axios.get(`${this.apiUrl}${url}`, this.getConfig(query, 'query'));
   };
 

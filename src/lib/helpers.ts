@@ -3,22 +3,6 @@ import { Toast } from 'native-base';
 import { ToastType, FieldValidationErrors, ValidationErrorDto } from 'types';
 import translations from './translations';
 
-export const log = (...params) => {
-  console.log(
-    '---------------------------------------------------------------',
-  );
-  console.log(
-    '---------------------------------------------------------------',
-  );
-  console.log(...params);
-  console.log(
-    '---------------------------------------------------------------',
-  );
-  console.log(
-    '---------------------------------------------------------------',
-  );
-};
-
 // TODO: Maybe refactor
 export const getCurrentRoute = (state) => {
   let actualRoute = state.routes[state.index];

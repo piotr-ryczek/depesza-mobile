@@ -1,5 +1,4 @@
 import React, { useReducer, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import {
   Button,
@@ -20,6 +19,7 @@ import { showToast } from 'lib/helpers';
 import { ToastType } from 'types';
 import { FormSection, FormWrapper, ItemWrapper } from 'components/form';
 import { LoginStackParamList } from 'navigators/login-stack';
+import { useAppDispatch } from 'lib/hooks';
 
 type LoginPublisherScreenProps = StackScreenProps<
   LoginStackParamList,
@@ -35,7 +35,7 @@ type FormValues = {
 export const LoginPublisherScreen = (props: LoginPublisherScreenProps) => {
   const { navigation } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formValues, setFormValues] = useReducer<BasicReducer<FormValues>>(

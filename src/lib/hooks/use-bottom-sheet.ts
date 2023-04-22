@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { BottomSheetContext } from 'lib/contexts/bottom-sheet';
 
-export default () => {
+export const useBottomSheet = () => {
   const { bottomSheetRef, setBottomSheetRef } = useContext(BottomSheetContext);
 
   return {

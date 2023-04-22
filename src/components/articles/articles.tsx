@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   VirtualizedList,
   StyleSheet,
@@ -21,6 +20,7 @@ import config from 'lib/config';
 import { handleError } from 'state/actions';
 import { FONT_FAMILY_HEADER_REGULAR } from 'styles';
 import { ArticleDto } from 'types';
+import { useAppDispatch } from 'lib/hooks';
 
 import { ArticleInList } from './article-in-list';
 import { getItem, getItemCount, getKey } from './helpers';
@@ -44,7 +44,7 @@ export const Articles = (props: ArticlesProps) => {
 
   const listRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const renderItem = useCallback(
     ({ item }) => <ArticleInList article={item} key={item.id} />,
@@ -107,8 +107,6 @@ export const Articles = (props: ArticlesProps) => {
 
     fetchArticles(1);
   }, [restart]);
-
-  console.log('Articles length >>>>>>>>>', articles.length);
 
   return (
     <>

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 
-import useBottomSheet from 'lib/hooks/use-bottom-sheet';
+import { useBottomSheet } from 'lib/hooks';
 import { FONT_FAMILY_HEADER } from 'styles';
 
 type ArticlesHeaderTitleProps = {

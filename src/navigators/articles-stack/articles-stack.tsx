@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native';
 import {
   createStackNavigator,
@@ -27,6 +26,7 @@ import {
 import { baseScreenOptions } from 'lib/header/config';
 import { fetchRegions } from 'state/actions';
 import { DrawerParamList } from 'navigators/app-drawer';
+import { useAppDispatch, useAppSelector } from 'lib/hooks';
 
 export type ArticlesStackParamList = {
   Dashboard: {};
@@ -58,8 +58,8 @@ type ArticlesStackProps = StackScreenProps<DrawerParamList, 'ArticlesStack'>;
 export const ArticlesStack = (props: ArticlesStackProps) => {
   const { navigation } = props;
 
-  const dispatch = useDispatch();
-  const { regionGroups, jwtToken, role } = useSelector(
+  const dispatch = useAppDispatch();
+  const { regionGroups, jwtToken, role } = useAppSelector(
     (state: AppState) => state,
   );
 

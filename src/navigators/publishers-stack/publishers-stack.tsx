@@ -9,9 +9,13 @@ import { PublishersScreen } from 'screens/publishers';
 import { Hamburger } from 'components/hamburger';
 import { baseScreenOptions } from 'lib/header/config';
 import { DrawerParamList } from 'navigators/app-drawer';
+import { PublisherScreen } from 'screens/publisher';
 
 export type PublishersStackParamList = {
   Publishers: {};
+  Publisher: {
+    publisherId: string;
+  };
 };
 
 const Stack = createStackNavigator<PublishersStackParamList>();
@@ -37,6 +41,11 @@ export const PublishersStack = (props: PublishersStackProps) => {
           name="Publishers"
           component={PublishersScreen}
           options={{ headerTitle: 'Autorzy' }}
+        />
+        <Screen
+          name="Publisher"
+          component={PublisherScreen}
+          options={{ headerTitle: 'Autor' }}
         />
       </Navigator>
     </SafeAreaView>

@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
+
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -17,5 +18,8 @@ const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const store = createStore(persistedReducer, applyMiddleware(logger, thunk));
 const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export { store, persistor };

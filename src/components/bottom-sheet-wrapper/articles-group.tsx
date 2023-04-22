@@ -4,7 +4,7 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 
 import { ACTIVE_OPACITY } from 'styles';
-import useBottomSheet from 'lib/hooks/use-bottom-sheet';
+import { useBottomSheet } from 'lib/hooks';
 import { getCurrentRoute } from 'lib/helpers';
 import { BottomSheetArticlesGroupDataItem } from 'types';
 import { itemStyles } from './styles';

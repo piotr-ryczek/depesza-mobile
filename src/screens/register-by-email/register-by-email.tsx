@@ -10,12 +10,7 @@ import {
   Text as NativeBaseText,
   Icon,
 } from 'native-base';
-import { useDispatch } from 'react-redux';
-import {
-  useFocusEffect,
-  useNavigation,
-  RouteProp,
-} from '@react-navigation/native';
+import { useFocusEffect, RouteProp } from '@react-navigation/native';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { handleError } from 'state/actions';
@@ -34,6 +29,7 @@ import {
 } from 'components/form';
 import { RegisterStackParamList } from 'navigators/register-stack';
 import { DrawerParamList } from 'navigators/app-drawer';
+import { useAppDispatch } from 'lib/hooks';
 
 type RegisterByEmailScreenProps = {
   navigation: CompositeNavigationProp<
@@ -60,7 +56,7 @@ type FormValues = {
 export const RegisterByEmailScreen = (props: RegisterByEmailScreenProps) => {
   const { navigation } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [state, setState] = useReducer<
     BasicReducer<RegisterByEmailScreenState>
   >(basicReducer, {

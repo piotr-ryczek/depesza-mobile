@@ -7,10 +7,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { ACTIVE_OPACITY } from 'styles';
-import { AppState } from 'state/app-state';
 import { ToastType, UserRole } from 'types';
 import { showToast } from 'lib/helpers';
 import api from 'lib/api';
@@ -21,6 +19,7 @@ import {
   undoReportArticle,
   handleError,
 } from 'state/actions';
+import { useAppSelector, useAppDispatch } from 'lib/hooks';
 
 type ArticlePopupMenuProps = {
   articleId: string;
@@ -30,7 +29,7 @@ type ArticlePopupMenuProps = {
 export const ArticlePopupMenu = (props: ArticlePopupMenuProps) => {
   const { articleId, publisherId: publishedById } = props;
   const menuRef = useRef(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     jwtToken,
@@ -38,7 +37,7 @@ export const ArticlePopupMenu = (props: ArticlePopupMenuProps) => {
     savedArticles,
     reportedArticles,
     publisherId,
-  } = useSelector((state: AppState) => state);
+  } = useAppSelector((state) => state);
 
   const isLoggedReader = !!(jwtToken && role === UserRole.READER);
   const isLoggedPublisher = !!(jwtToken && role === UserRole.PUBLISHER);
@@ -151,7 +150,7 @@ export const ArticlePopupMenu = (props: ArticlePopupMenuProps) => {
   const actionLabels = actions.map(({ label }) => label);
 
   const handleShowPopupError = () => {
-    console.log('Błąd');
+    console.log('Show popup error');
   };
 
   const handlePress: (item: string, index: number | undefined) => void = async (

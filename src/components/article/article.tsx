@@ -20,8 +20,13 @@ import { ArticlePopupMenu } from 'components/article-popup-menu';
 import dateFormat from 'lib/date-format';
 import { Patronite } from 'components/patronite';
 import { HtmlParser } from 'components/html-parser';
+import { ArticleDto } from 'types';
 
-export const Article = (props) => {
+type ArticleProps = {
+  article: ArticleDto;
+};
+
+export const Article = (props: ArticleProps) => {
   const { article } = props;
 
   const navigation = useNavigation();

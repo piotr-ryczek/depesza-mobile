@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
 import { ScrollView } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { basicReducer, BasicReducer } from 'lib/basic-reducer';
@@ -11,6 +10,7 @@ import { Publisher } from 'components/publisher';
 import { handleError } from 'state/actions';
 import { PublisherDto } from 'types';
 import { ArticlesStackParamList } from 'navigators/articles-stack';
+import { useAppDispatch } from 'lib/hooks';
 
 type PublisherScreenProps = StackScreenProps<
   ArticlesStackParamList,
@@ -29,7 +29,7 @@ export const PublisherScreen = (props: PublisherScreenProps) => {
     params: { publisherId },
   } = route;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [state, setState] = useReducer<BasicReducer<PublisherScreenState>>(
     basicReducer,
     {

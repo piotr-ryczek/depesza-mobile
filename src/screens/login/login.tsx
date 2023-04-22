@@ -1,5 +1,4 @@
 import React, { useReducer, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -26,6 +25,7 @@ import {
   ItemWrapper,
 } from 'components/form';
 import { Separator } from 'components/content';
+import { useAppDispatch } from 'lib/hooks';
 
 type FormValues = {
   email: string;
@@ -35,7 +35,7 @@ type FormValues = {
 export const LoginScreen = () => {
   const navigation = useNavigation();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formValues, setFormValues] = useReducer<BasicReducer<FormValues>>(
