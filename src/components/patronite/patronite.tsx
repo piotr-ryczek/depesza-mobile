@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Linking } from 'react-native';
+import { View, Text, StyleSheet, Image, Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
@@ -10,7 +10,11 @@ import {
   FONT_FAMILY_TEXT_REGULAR,
 } from 'styles';
 
-export const Patronite = (props) => {
+type PatroniteProps = {
+  url: string;
+};
+
+export const Patronite = (props: PatroniteProps) => {
   const { url } = props;
 
   const handleGo = () => {
@@ -28,7 +32,7 @@ export const Patronite = (props) => {
           </Text>
         </View>
         <View style={styles.button}>
-          <ImageBackground
+          <Image
             source={require('../../../assets/patronite.png')}
             style={styles.image}
             resizeMode="contain"
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flexGrow: 1,
-    height: '90%',
-    marginTop: 3,
+    height: '70%',
+    marginTop: 0,
   },
 });

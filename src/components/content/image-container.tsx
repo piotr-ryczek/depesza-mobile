@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Linking } from 'react-native';
+import { StyleSheet, View, Image, Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SMALL_SPACE, ACTIVE_OPACITY } from 'styles';
 
-export const ImageContainer = (props) => {
+type ImageContainerProps = {
+  src: string;
+};
+
+export const ImageContainer = (props: ImageContainerProps) => {
   const { src } = props;
 
   const goToImage = () => {
@@ -13,7 +17,7 @@ export const ImageContainer = (props) => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity activeOpacity={ACTIVE_OPACITY} onPress={goToImage}>
-        <ImageBackground
+        <Image
           source={{
             uri: src,
           }}

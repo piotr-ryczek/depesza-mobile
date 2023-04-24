@@ -54,6 +54,7 @@ export const AppDrawer = () => {
     }
   }, []);
 
+  // Currently impossible in second condition (isLoggedReader && !hasAccess) as logging without access results in error HAS_NOT_ACCESS
   const isLoggedReader = !!(jwtToken && role === UserRole.READER);
   const isNotLoggedInOrHasNotAccess =
     !jwtToken || (isLoggedReader && !hasAccess);

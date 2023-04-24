@@ -4,10 +4,12 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
+  Image,
   StyleSheet,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { getImageUrl } from 'lib/helpers';
 import config from 'lib/config';
 import {
   gridStyles,
@@ -20,7 +22,7 @@ import { ArticlePopupMenu } from 'components/article-popup-menu';
 import dateFormat from 'lib/date-format';
 import { Patronite } from 'components/patronite';
 import { HtmlParser } from 'components/html-parser';
-import { ArticleDto } from 'types';
+import { ArticleDto, ThumbnailSize } from 'types';
 
 type ArticleProps = {
   article: ArticleDto;
@@ -65,11 +67,10 @@ export const Article = (props: ArticleProps) => {
       <TouchableOpacity activeOpacity={ACTIVE_OPACITY} onPress={goToPublisher}>
         <View style={{ ...gridStyles.container, ...articleStyles.header }}>
           <View style={styles.publisherLogoWrapper}>
-            <ImageBackground
+            <Image
               source={{
-                uri: `${config.apiUrl}/uploads/${publisherLogoUrl}`,
+                uri: getImageUrl(publisherLogoUrl, ThumbnailSize.W150),
               }}
-              resizeMode="contain"
               style={styles.publisherLogo}
             />
           </View>
@@ -83,7 +84,7 @@ export const Article = (props: ArticleProps) => {
       {/* Thumbnail */}
       <ImageBackground
         source={{
-          uri: `${config.apiUrl}/uploads/w768/${photoUrl}`,
+          uri: getImageUrl(photoUrl, ThumbnailSize.W768),
         }}
         resizeMode="cover"
         style={[articleStyles.thumbnail, styles.thumbnail]}>
@@ -115,13 +116,14 @@ export const Article = (props: ArticleProps) => {
             <Text style={articleStyles.author}>Napisany przez: {author}</Text>
           </View>
         )}
-        <ImageBackground
-          source={{
-            uri: `${config.apiUrl}/uploads/${publisherLogoUrl}`,
-          }}
-          resizeMode="contain"
-          style={styles.publisherBottomLogo}
-        />
+        <View style={styles.publisherLogoBottomWrapper}>
+          <Image
+            source={{
+              uri: getImageUrl(publisherLogoUrl, ThumbnailSize.W150),
+            }}
+            style={styles.publisherBottomLogo}
+          />
+        </View>
         {!!patroniteUrl && <Patronite url={patroniteUrl} />}
       </View>
     </View>
@@ -133,9 +135,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   publisherBottomLogo: {
-    width: '100%',
-    height: 50,
-    marginBottom: SPACE,
+    width: 66,
+    height: 66,
   },
   publisherLogoWrapper: {
     width: 56,
@@ -147,6 +148,11 @@ const styles = StyleSheet.create({
     borderRadius: 1000,
     elevation: 5,
     overflow: 'hidden',
+  },
+  publisherLogoBottomWrapper: {
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   publisherLogo: {
     width: 44,

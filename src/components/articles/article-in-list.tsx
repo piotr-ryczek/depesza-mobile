@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
+  Image,
   StyleSheet,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -15,7 +16,8 @@ import dateFormat from 'lib/date-format';
 import { Separator } from 'components/content';
 import { SPACE, FONT_FAMILY_TEXT } from 'styles';
 import { HtmlParser } from 'components/html-parser';
-import { ArticleDto } from 'types';
+import { ArticleDto, ThumbnailSize } from 'types';
+import { getImageUrl } from 'lib/helpers';
 
 type ArticleInListProps = {
   article: ArticleDto;
@@ -63,11 +65,10 @@ export const ArticleInList = memo((props: ArticleInListProps) => {
           onPress={goToPublisher}>
           <View style={[gridStyles.container, articleStyles.header]}>
             <View style={styles.publisherLogoWrapper}>
-              <ImageBackground
+              <Image
                 source={{
-                  uri: `${config.apiUrl}/uploads/${publisherLogoUrl}`,
+                  uri: getImageUrl(publisherLogoUrl, ThumbnailSize.W150),
                 }}
-                resizeMode="contain"
                 style={styles.publisherLogo}
               />
             </View>
@@ -83,7 +84,7 @@ export const ArticleInList = memo((props: ArticleInListProps) => {
         <TouchableOpacity activeOpacity={ACTIVE_OPACITY} onPress={goToArticle}>
           <ImageBackground
             source={{
-              uri: `${config.apiUrl}/uploads/w768/${photoUrl}`,
+              uri: getImageUrl(photoUrl, ThumbnailSize.W768),
             }}
             resizeMode="cover"
             style={[articleStyles.thumbnail, styles.thumbnail]}>

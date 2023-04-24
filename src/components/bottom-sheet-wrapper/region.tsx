@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { StyleSheet, ActivityIndicator } from 'react-native';
-import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 
 import { AppState } from 'state/app-state';
-import config from 'lib/config';
 import { useBottomSheet, useAppDispatch, useAppSelector } from 'lib/hooks';
-import { BottomSheetRegionGroupDataItem, UserRole, ToastType } from 'types';
+import {
+  BottomSheetRegionGroupDataItem,
+  UserRole,
+  ToastType,
+  ThumbnailSize,
+} from 'types';
 import { followRegion, unfollowRegion, handleError } from 'state/actions';
 import api from 'lib/api';
-import { getCurrentRoute, showToast } from 'lib/helpers';
+import { getCurrentRoute, getImageUrl, showToast } from 'lib/helpers';
 import { ACTIVE_OPACITY } from 'styles';
 
 import { itemStyles } from './styles';
@@ -95,9 +99,9 @@ export const Region = (props: RegionProps) => {
           onPress={handleGoToRegion}
           disabled={isLoading}>
           <View style={styles.anchor}>
-            <ImageBackground
+            <Image
               source={{
-                uri: `${config.apiUrl}/uploads/regions/${iconUrl}`,
+                uri: getImageUrl(iconUrl, ThumbnailSize.FULL),
               }}
               resizeMode="contain"
               style={styles.iconBackground}

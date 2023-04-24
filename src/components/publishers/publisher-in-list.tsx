@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  ImageBackground,
-  Text,
-} from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Image, Text } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { articleStyles, ACTIVE_OPACITY } from 'styles';
 import config from 'lib/config';
-import { PublisherInListDto } from 'types';
+import { PublisherInListDto, ThumbnailSize } from 'types';
+import { getImageUrl } from 'lib/helpers';
 
 type PublisherInListProps = {
   publisher: PublisherInListDto;
@@ -31,11 +26,10 @@ export const PublisherInList = (props: PublisherInListProps) => {
     <TouchableOpacity onPress={goTo} activeOpacity={ACTIVE_OPACITY}>
       <View style={[articleStyles.header, styles.header]}>
         <View style={styles.publisherLogoWrapper}>
-          <ImageBackground
+          <Image
             source={{
-              uri: `${config.apiUrl}/uploads/${logoUrl}`,
+              uri: getImageUrl(logoUrl, ThumbnailSize.W150),
             }}
-            resizeMode="contain"
             style={styles.publisherLogo}
           />
         </View>

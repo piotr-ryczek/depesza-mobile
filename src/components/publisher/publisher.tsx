@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import config from 'lib/config';
@@ -7,8 +7,8 @@ import { Patronite } from 'components/patronite';
 import { PageWrapper } from 'components/page';
 import { Paragraph } from 'components/content';
 import { UrlButton } from 'components/url-button';
-import { clearUrl } from 'lib/helpers';
-import { PublisherDto } from 'types';
+import { clearUrl, getImageUrl } from 'lib/helpers';
+import { PublisherDto, ThumbnailSize } from 'types';
 
 type PublisherProps = {
   publisher: PublisherDto;
@@ -33,12 +33,12 @@ export const Publisher = (props: PublisherProps) => {
     <PageWrapper>
       {/* Logo */}
       <View style={styles.logoWrapper}>
-        <ImageBackground
+        <Image
           source={{
-            uri: `${config.apiUrl}/uploads/${logoUrl}`,
+            uri: getImageUrl(logoUrl, ThumbnailSize.W150),
           }}
-          resizeMode="contain"
           style={styles.logo}
+          resizeMode="contain"
         />
       </View>
       {/* Description */}

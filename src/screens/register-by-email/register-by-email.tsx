@@ -10,8 +10,12 @@ import {
   Text as NativeBaseText,
   Icon,
 } from 'native-base';
-import { useFocusEffect, RouteProp } from '@react-navigation/native';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  RouteProp,
+  CompositeNavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
 
 import { handleError } from 'state/actions';
 import { Loading } from 'components/loading';
@@ -30,6 +34,7 @@ import {
 import { RegisterStackParamList } from 'navigators/register-stack';
 import { DrawerParamList } from 'navigators/app-drawer';
 import { useAppDispatch } from 'lib/hooks';
+import { Separator } from 'components/content';
 
 type RegisterByEmailScreenProps = {
   navigation: CompositeNavigationProp<
@@ -54,7 +59,7 @@ type FormValues = {
 };
 
 export const RegisterByEmailScreen = (props: RegisterByEmailScreenProps) => {
-  const { navigation } = props;
+  const navigation = useNavigation();
 
   const dispatch = useAppDispatch();
   const [state, setState] = useReducer<
@@ -188,82 +193,95 @@ export const RegisterByEmailScreen = (props: RegisterByEmailScreenProps) => {
             </Button>
           </FormSection>
         ) : (
-          <FormSection first last>
-            <ItemWrapper>
-              <Item floatingLabel error={!!validationErrors.email}>
-                <Label>Email</Label>
-                <Input
-                  onChangeText={handleTextChange('email')}
-                  autoCompleteType="email"
-                  keyboardType="email-address"
-                  value={email}
-                />
-              </Item>
-              <InputError error={validationErrors.email} />
-            </ItemWrapper>
-            <ItemWrapper>
-              <Item floatingLabel error={!!validationErrors.password}>
-                <Label>Hasło</Label>
-                <Input
-                  secureTextEntry={!isPasswordVisible}
-                  onChangeText={handleTextChange('password')}
-                  value={password}
-                />
-              </Item>
-              <InputError error={validationErrors.password} />
-              <View
-                style={[
-                  formStyles.iconWrapperOverInput,
-                  isPasswordVisible && formStyles.iconWrapperOverInputHold,
-                ]}>
-                <TouchableWithoutFeedback
-                  onPressIn={handleShowPassword}
-                  onPressOut={handleHidePassword}>
-                  <Icon
-                    name={isPasswordVisible ? 'eye-slash' : 'eye'}
-                    style={formStyles.iconOverInput}
-                    type="FontAwesome5"
+          <>
+            <FormSection first>
+              <ItemWrapper>
+                <Item floatingLabel error={!!validationErrors.email}>
+                  <Label>Email</Label>
+                  <Input
+                    onChangeText={handleTextChange('email')}
+                    autoCompleteType="email"
+                    keyboardType="email-address"
+                    value={email}
                   />
-                </TouchableWithoutFeedback>
-              </View>
-            </ItemWrapper>
-            <ItemWrapper>
-              <Item floatingLabel error={!!validationErrors.repeatPassword}>
-                <Label>Powtórz hasło</Label>
-                <Input
-                  secureTextEntry={!isRepeatPasswordVisible}
-                  onChangeText={handleTextChange('repeatPassword')}
-                  value={repeatPassword}
-                />
-              </Item>
-              <InputError error={validationErrors.repeatPassword} />
-              <View
-                style={[
-                  formStyles.iconWrapperOverInput,
-                  isPasswordVisible && formStyles.iconWrapperOverInputHold,
-                ]}>
-                <TouchableWithoutFeedback
-                  onPressIn={handleShowRepeatPassword}
-                  onPressOut={handleHideRepeatPassword}>
-                  <Icon
-                    name={isRepeatPasswordVisible ? 'eye-slash' : 'eye'}
-                    style={formStyles.iconOverInput}
-                    type="FontAwesome5"
+                </Item>
+                <InputError error={validationErrors.email} />
+              </ItemWrapper>
+              <ItemWrapper>
+                <Item floatingLabel error={!!validationErrors.password}>
+                  <Label>Hasło</Label>
+                  <Input
+                    secureTextEntry={!isPasswordVisible}
+                    onChangeText={handleTextChange('password')}
+                    value={password}
                   />
-                </TouchableWithoutFeedback>
-              </View>
-            </ItemWrapper>
-            <ItemWrapper button>
+                </Item>
+                <InputError error={validationErrors.password} />
+                <View
+                  style={[
+                    formStyles.iconWrapperOverInput,
+                    isPasswordVisible && formStyles.iconWrapperOverInputHold,
+                  ]}>
+                  <TouchableWithoutFeedback
+                    onPressIn={handleShowPassword}
+                    onPressOut={handleHidePassword}>
+                    <Icon
+                      name={isPasswordVisible ? 'eye-slash' : 'eye'}
+                      style={formStyles.iconOverInput}
+                      type="FontAwesome5"
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              </ItemWrapper>
+              <ItemWrapper>
+                <Item floatingLabel error={!!validationErrors.repeatPassword}>
+                  <Label>Powtórz hasło</Label>
+                  <Input
+                    secureTextEntry={!isRepeatPasswordVisible}
+                    onChangeText={handleTextChange('repeatPassword')}
+                    value={repeatPassword}
+                  />
+                </Item>
+                <InputError error={validationErrors.repeatPassword} />
+                <View
+                  style={[
+                    formStyles.iconWrapperOverInput,
+                    isPasswordVisible && formStyles.iconWrapperOverInputHold,
+                  ]}>
+                  <TouchableWithoutFeedback
+                    onPressIn={handleShowRepeatPassword}
+                    onPressOut={handleHideRepeatPassword}>
+                    <Icon
+                      name={isRepeatPasswordVisible ? 'eye-slash' : 'eye'}
+                      style={formStyles.iconOverInput}
+                      type="FontAwesome5"
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              </ItemWrapper>
+              <ItemWrapper button>
+                <Button
+                  primary
+                  full
+                  rounded
+                  style={formStyles.button}
+                  onPress={handleRegister}>
+                  <NativeBaseText>Załóż konto</NativeBaseText>
+                </Button>
+              </ItemWrapper>
+            </FormSection>
+            <Separator />
+            <FormSection last>
               <Button
-                primary
+                info
                 full
                 rounded
                 style={formStyles.button}
-                onPress={handleRegister}>
-                <NativeBaseText>Załóż konto</NativeBaseText>
+                onPress={() => navigation.navigate('ConfirmEmailManually')}>
+                <NativeBaseText>Potwierdź email ręcznie</NativeBaseText>
               </Button>
-            </ItemWrapper>
-          </FormSection>
+            </FormSection>
+          </>
         )}
       </FormWrapper>
     </ScrollView>

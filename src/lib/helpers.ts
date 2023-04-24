@@ -1,7 +1,13 @@
 import { Toast } from 'native-base';
 
-import { ToastType, FieldValidationErrors, ValidationErrorDto } from 'types';
+import {
+  ToastType,
+  FieldValidationErrors,
+  ValidationErrorDto,
+  ThumbnailSize,
+} from 'types';
 import translations from './translations';
+import config from './config';
 
 // TODO: Maybe refactor
 export const getCurrentRoute = (state) => {
@@ -54,3 +60,10 @@ export const prepareValidationErrors = (
 
     return acc;
   }, {});
+
+export const getImageUrl = (
+  fileName: string,
+  fileSize = ThumbnailSize.FULL,
+): string => {
+  return `${config.apiUrl}/images/${fileName}?fileSize=${fileSize}`;
+};

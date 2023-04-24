@@ -17,7 +17,7 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['http://www.artagr.app'],
+  prefixes: ['http://www.depesza.app'],
   config,
   // getInitialURL: async () => {
   //   // Check if app was opened from a deep link
