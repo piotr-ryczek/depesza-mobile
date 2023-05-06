@@ -6,6 +6,7 @@ export const LINE_HEIGHT = 26;
 export const LINE_HEIGHT_SMALL = 22;
 export const ACTIVE_OPACITY = 0.8;
 export const PARAGRAPH_FONT_SIZE = 18;
+export const CAPTION_FONT_SIZE = 14;
 export const FONT_FAMILY_HEADER = 'Merriweather-Bold';
 export const FONT_FAMILY_HEADER_REGULAR = 'Merriweather-Regular';
 export const FONT_FAMILY_TEXT = 'OpenSans-Light';

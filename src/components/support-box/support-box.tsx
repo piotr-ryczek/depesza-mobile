@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Linking } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Linking,
+  ImageSourcePropType,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
@@ -9,13 +16,24 @@ import {
   ACTIVE_OPACITY,
   FONT_FAMILY_TEXT_REGULAR,
 } from 'styles';
+import { BACKGROUND_COLOR, BORDER_WIDTH } from './helpers';
 
-type PatroniteProps = {
+type SupportBoxProps = {
   url: string;
+  imageStyles: any;
+  buttonStyles?: any;
+  imageUrl: ImageSourcePropType;
+  providerLabel: string;
 };
 
-export const Patronite = (props: PatroniteProps) => {
-  const { url } = props;
+export const SupportBox = (props: SupportBoxProps) => {
+  const {
+    url,
+    imageStyles,
+    buttonStyles = {},
+    imageUrl,
+    providerLabel,
+  } = props;
 
   const handleGo = () => {
     Linking.openURL(url);
@@ -27,14 +45,14 @@ export const Patronite = (props: PatroniteProps) => {
         <View style={styles.explanationWrapper}>
           <Text style={styles.explanation}>
             Pamiętaj, że autorzy utrzymują się dzięki naszemu wsparciu. Bez
-            wpłat wcześniej czy później znikną. Wejdź na Patronite i
+            wpłat wcześniej czy później znikną. Wejdź na {providerLabel} i
             bezpośrednio dołóż swoją cegiełkę do pracy autora!
           </Text>
         </View>
-        <View style={styles.button}>
+        <View style={{ ...styles.button, ...buttonStyles }}>
           <Image
-            source={require('../../../assets/patronite.png')}
-            style={styles.image}
+            source={imageUrl}
+            style={{ ...styles.image, ...imageStyles }}
             resizeMode="contain"
           />
         </View>
@@ -42,9 +60,6 @@ export const Patronite = (props: PatroniteProps) => {
     </View>
   );
 };
-
-const BORDER_WIDTH = 5;
-const BACKGROUND_COLOR = '#3c3c3c';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -75,7 +90,6 @@ const styles = StyleSheet.create({
   },
   image: {
     flexGrow: 1,
-    height: '70%',
     marginTop: 0,
   },
 });

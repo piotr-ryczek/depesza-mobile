@@ -47,7 +47,10 @@ export const PublisherScreen = (props: PublisherScreenProps) => {
 
       const { publisher: fetchedPublisher } = data;
 
-      setState({ isLoading: false, publisher: fetchedPublisher });
+      setState({
+        isLoading: false,
+        publisher: fetchedPublisher,
+      });
     } catch (error) {
       setState({ isLoading: false });
       dispatch(handleError(error));

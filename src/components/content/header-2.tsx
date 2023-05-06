@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { SPACE, SMALL_SPACE, FONT_FAMILY_HEADER } from 'styles';
 
-export const Header2 = (props) => {
-  const { children, noMarginTop } = props;
+type Header2Props = {
+  children: ReactNode;
+  noMarginTop?: boolean;
+};
+
+export const Header2 = (props: Header2Props) => {
+  const { children, noMarginTop = false } = props;
 
   return (
     <View style={[styles.wrapper, noMarginTop && { marginTop: 0 }]}>
@@ -20,7 +25,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACE,
   },
   text: {
-    fontSize: 28,
+    fontSize: 22,
     fontFamily: FONT_FAMILY_HEADER,
   },
 });

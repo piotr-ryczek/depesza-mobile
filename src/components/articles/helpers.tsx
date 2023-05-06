@@ -12,3 +12,8 @@ export const getItem = (data: ArticleDto[], index: number) => {
 export const getItemCount = (data: ArticleDto[]) => data.length;
 
 export const getKey = (item: ArticleDto) => item._id.toString();
+
+export const invalidArticlesFilter = ({
+  publishedBy,
+  region,
+}: ArticleDto): boolean => !!publishedBy && !!region;

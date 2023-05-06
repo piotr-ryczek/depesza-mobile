@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-export const PageWrapper = (props) => {
+type PageWrapperProps = {
+  children: ReactNode;
+};
+
+export const PageWrapper = (props: PageWrapperProps) => {
   const { children } = props;
 
   return <View style={styles.wrapper}>{children}</View>;

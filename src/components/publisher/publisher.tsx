@@ -3,7 +3,9 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import config from 'lib/config';
-import { Patronite } from 'components/patronite';
+import { Patronite } from 'components/support-box/patronite';
+import { Patreon } from 'components/support-box/patreon';
+import { BuyCoffeeTo } from 'components/support-box/buy-coffee-to';
 import { PageWrapper } from 'components/page';
 import { Paragraph } from 'components/content';
 import { UrlButton } from 'components/url-button';
@@ -21,6 +23,8 @@ export const Publisher = (props: PublisherProps) => {
 
   const {
     patroniteUrl,
+    patreonUrl,
+    buyCoffeeToUrl,
     logoUrl,
     description,
     authors,
@@ -49,6 +53,10 @@ export const Publisher = (props: PublisherProps) => {
       )}
       {/* Patronite */}
       {!!patroniteUrl && <Patronite url={patroniteUrl} />}
+      {/* Patreon */}
+      {!!patreonUrl && <Patreon url={patreonUrl} />}
+      {/* BuyCoffeeTo */}
+      {!!buyCoffeeToUrl && <BuyCoffeeTo url={buyCoffeeToUrl} />}
       {/* URLs */}
       {!!facebookUrl && (
         <UrlButton

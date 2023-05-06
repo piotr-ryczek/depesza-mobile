@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { SPACE, SMALL_SPACE, FONT_FAMILY_HEADER } from 'styles';
 
-export const Header5 = (props) => {
-  const { children, noMarginTop } = props;
+type Header5Props = {
+  children: ReactNode;
+  noMarginTop?: boolean;
+};
+
+export const Header5 = (props: Header5Props) => {
+  const { children, noMarginTop = false } = props;
 
   return (
     <View style={[styles.wrapper, noMarginTop && { marginTop: 0 }]}>

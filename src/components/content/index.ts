@@ -9,3 +9,4 @@ export * from './header-4';
 export * from './header-5';
 export * from './header-6';
 export * from './image-container';
+export * from './caption';

@@ -8,7 +8,11 @@ import {
   PARAGRAPH_FONT_SIZE,
 } from 'styles';
 
-export const List = (props) => {
+type ListProps = {
+  items: string[];
+};
+
+export const List = (props: ListProps) => {
   const { items } = props;
 
   return (

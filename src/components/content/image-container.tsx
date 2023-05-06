@@ -21,7 +21,7 @@ export const ImageContainer = (props: ImageContainerProps) => {
           source={{
             uri: src,
           }}
-          resizeMode="contain"
+          resizeMode="cover"
           style={styles.image}
         />
       </TouchableOpacity>

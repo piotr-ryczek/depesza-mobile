@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -9,7 +9,14 @@ import {
   FONT_FAMILY_HEADER_REGULAR,
 } from 'styles';
 
-export const UrlButton = (props) => {
+type UrlButtonProps = {
+  url: string;
+  label: string;
+  icon: ReactNode;
+  backgroundColor: string;
+};
+
+export const UrlButton = (props: UrlButtonProps) => {
   const { url, label, icon, backgroundColor } = props;
 
   const handleGo = () => {

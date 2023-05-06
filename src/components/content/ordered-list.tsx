@@ -8,7 +8,11 @@ import {
   PARAGRAPH_FONT_SIZE,
 } from 'styles';
 
-export const OrderedList = (props) => {
+type OrderedListProps = {
+  items: string[];
+};
+
+export const OrderedList = (props: OrderedListProps) => {
   const { items } = props;
 
   return (

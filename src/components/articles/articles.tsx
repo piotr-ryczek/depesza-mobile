@@ -23,7 +23,12 @@ import { ArticleDto } from 'types';
 import { useAppDispatch } from 'lib/hooks';
 
 import { ArticleInList } from './article-in-list';
-import { getItem, getItemCount, getKey } from './helpers';
+import {
+  getItem,
+  getItemCount,
+  getKey,
+  invalidArticlesFilter,
+} from './helpers';
 
 type ArticlesProps = {
   apiCall: (
@@ -72,8 +77,12 @@ export const Articles = (props: ArticlesProps) => {
 
       const { articles: newArticles } = data;
 
+      const filteredNewArticles = newArticles.filter(invalidArticlesFilter);
+
       const finalArticles: ArticleDto[] =
-        newPage === 1 ? newArticles : [...articles, ...newArticles];
+        newPage === 1
+          ? filteredNewArticles
+          : [...articles, ...filteredNewArticles];
 
       setState({
         articles: finalArticles,

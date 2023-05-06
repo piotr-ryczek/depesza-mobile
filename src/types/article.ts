@@ -6,7 +6,9 @@ export type ArticleDto = {
     _id: string;
     name: string;
     logoUrl: string;
-    patroniteUrl: string;
+    patroniteUrl?: string;
+    patreonUrl?: string;
+    buyCoffeeToUrl?: string;
   };
   title: string;
   excerpt: string;

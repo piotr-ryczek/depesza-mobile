@@ -3,7 +3,9 @@ export interface PublisherInListDto {
   name: string;
   logoUrl: string;
   description: string;
-  patroniteUrl: string;
+  patroniteUrl?: string;
+  patreonUrl?: string;
+  buyCoffeeToUrl?: string;
 }
 
 export interface PublisherDto extends PublisherInListDto {

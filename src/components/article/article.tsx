@@ -20,9 +20,10 @@ import {
 } from 'styles';
 import { ArticlePopupMenu } from 'components/article-popup-menu';
 import dateFormat from 'lib/date-format';
-import { Patronite } from 'components/patronite';
+import { Patronite } from 'components/support-box/patronite';
 import { HtmlParser } from 'components/html-parser';
 import { ArticleDto, ThumbnailSize } from 'types';
+import { BuyCoffeeTo, Patreon } from 'components/support-box';
 
 type ArticleProps = {
   article: ArticleDto;
@@ -51,6 +52,8 @@ export const Article = (props: ArticleProps) => {
     name: publisherName,
     logoUrl: publisherLogoUrl,
     patroniteUrl,
+    patreonUrl,
+    buyCoffeeToUrl,
   } = publishedBy;
 
   const goToPublisher = () => {
@@ -116,15 +119,24 @@ export const Article = (props: ArticleProps) => {
             <Text style={articleStyles.author}>Napisany przez: {author}</Text>
           </View>
         )}
-        <View style={styles.publisherLogoBottomWrapper}>
-          <Image
-            source={{
-              uri: getImageUrl(publisherLogoUrl, ThumbnailSize.W150),
-            }}
-            style={styles.publisherBottomLogo}
-          />
-        </View>
+        <TouchableOpacity
+          activeOpacity={ACTIVE_OPACITY}
+          onPress={goToPublisher}>
+          <View style={styles.publisherLogoBottomWrapper}>
+            <Image
+              source={{
+                uri: getImageUrl(publisherLogoUrl, ThumbnailSize.W150),
+              }}
+              style={styles.publisherBottomLogo}
+            />
+          </View>
+        </TouchableOpacity>
+        {/* Patronite */}
         {!!patroniteUrl && <Patronite url={patroniteUrl} />}
+        {/* Patreon */}
+        {!!patreonUrl && <Patreon url={patreonUrl} />}
+        {/* BuyCoffeeTo */}
+        {!!buyCoffeeToUrl && <BuyCoffeeTo url={buyCoffeeToUrl} />}
       </View>
     </View>
   );

@@ -4,21 +4,20 @@ import {
   SPACE,
   LINE_HEIGHT,
   FONT_FAMILY_TEXT,
-  PARAGRAPH_FONT_SIZE,
+  CAPTION_FONT_SIZE,
 } from 'styles';
 
-type ParagraphProps = {
+type CaptionProps = {
   children: ReactNode;
   margin?: boolean;
-  italic?: boolean;
 };
 
-export const Paragraph = (props: ParagraphProps) => {
-  const { children, margin = true, italic = false } = props;
+export const Caption = (props: CaptionProps) => {
+  const { children, margin = true } = props;
 
   return (
     <View style={[styles.wrapper, margin && { marginBottom: SPACE }]}>
-      <Text selectable style={[styles.text, italic && styles.textItalic]}>
+      <Text selectable style={[styles.text, styles.textItalic]}>
         {children}
       </Text>
     </View>
@@ -28,7 +27,7 @@ export const Paragraph = (props: ParagraphProps) => {
 const styles = StyleSheet.create({
   wrapper: {},
   text: {
-    fontSize: PARAGRAPH_FONT_SIZE,
+    fontSize: CAPTION_FONT_SIZE,
     fontFamily: FONT_FAMILY_TEXT,
     lineHeight: LINE_HEIGHT,
     flex: 1,

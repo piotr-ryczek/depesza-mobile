@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement, FunctionComponent } from 'react';
 import * as cheerio from 'cheerio';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -12,6 +12,7 @@ import {
   List,
   OrderedList,
   ImageContainer,
+  Caption,
 } from 'components/content';
 
 import { preHTMLClear, cleanFromTags, cleanText, cleanSrc } from './helpers';
@@ -46,13 +47,21 @@ const retrieveComponentsFromChildren = (children) => {
             break;
           }
 
-          case 'figcaption':
           case 'p': {
             const text = cleanFromTags(el);
 
             if (!text) break;
 
             acc.push(<Paragraph key={finalIndex}>{text}</Paragraph>);
+            break;
+          }
+
+          case 'figcaption': {
+            const text = cleanFromTags(el);
+
+            if (!text) break;
+
+            acc.push(<Caption key={finalIndex}>{text}</Caption>);
             break;
           }
 
@@ -168,7 +177,11 @@ const retrieveComponentsFromChildren = (children) => {
   return components;
 };
 
-export const HtmlParser = (props) => {
+type HtmlParserProps = {
+  html: string;
+};
+
+export const HtmlParser = (props: HtmlParserProps): ReactElement => {
   const { html } = props;
 
   const initialHTML = preHTMLClear(html);
@@ -177,9 +190,13 @@ export const HtmlParser = (props) => {
 
   const body = $('body')[0];
 
-  if (!body || !body.children || !body.children.length) return null;
+  if (!body || !body.children || !body.children.length) return <></>;
 
-  const components = retrieveComponentsFromChildren(body.children, 0);
+  body.children[0].type;
+
+  const components: ReactElement = retrieveComponentsFromChildren(
+    body.children,
+  );
 
   return components;
 };

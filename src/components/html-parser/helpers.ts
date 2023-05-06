@@ -1,4 +1,4 @@
-export const preHTMLClear = (html: string) => {
+export const preHTMLClear = (html: string): string => {
   let finalHTML;
 
   finalHTML = html.replace(/\n/g, '');
@@ -7,7 +7,7 @@ export const preHTMLClear = (html: string) => {
   return finalHTML;
 };
 
-export const cleanText = (text) => {
+export const cleanText = (text: string): string => {
   let finalText;
 
   finalText = text.replace(/\[.*?\]/g, '');
@@ -16,7 +16,7 @@ export const cleanText = (text) => {
   return finalText;
 };
 
-export const cleanFromTags = (el) => {
+export const cleanFromTags = (el): string => {
   const { children, type, data } = el;
 
   if (type === 'text') return cleanText(data);
@@ -39,8 +39,8 @@ export const cleanFromTags = (el) => {
   return text;
 };
 
-export const cleanSrc = (src: string) => {
-  const [finalSrc] = src.match(/(.*?(?:jpg|png|jpeg))|.*/);
+export const cleanSrc = (src: string): string => {
+  const [finalSrc] = src.match(/(.*?(?:jpg|png|jpeg))|.*/)!;
 
   return finalSrc;
 };
